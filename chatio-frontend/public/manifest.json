@@ -1,0 +1,36 @@
+{
+    "name": "Chat.io",
+    "short_name": "Chat.io",
+    "description": "Chat app with voice, video calls, and offline support",
+    "start_url": "/",
+    "id": "/",
+    "theme_color": "#000000",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "icons":  [
+      {
+        "src": "/icons/icon.png",
+        "sizes": "218x231",
+        "type": "image/png"
+      },
+      {
+        "src": "/icons/icon.jpg",
+        "sizes": "200x200",
+        "type": "image/jpg"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "/screenshots/screen.png",
+        "sizes": "1064x502",
+        "type": "image/png",
+        "form_factor": "wide"
+      },
+      {
+        "src": "/screenshots/screen1.png",
+        "form_factor": "narrow",
+        "type": "image/png",
+        "sizes": "513x658"
+      }
+    ]
+}
