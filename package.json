@@ -1,0 +1,13 @@
+{
+    "name": "Chatio",
+    "version": "1.0.0",
+    "workspaces": [
+        "frontend",
+        "backend"
+    ],
+    "scripts": {
+        "docker:up": "docker-compose up",
+        "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build"
+    }
+}

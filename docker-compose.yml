@@ -1,0 +1,57 @@
+version: '3.3'
+
+services:
+  frontend: 
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports: 
+      - 3000:80
+    volumes: 
+      - ./frontend:/app
+      - /app/node_modules
+    environment: 
+      - NODE_ENV=development
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 5000:3000
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - postgres
+      - redis
+
+  postgres: 
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    ports:
+      - 5436:5432
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - redis_data:/data
+    ports:
+      - 6379:6379
+
+volumes:
+  postgres_data:
+  redis_data:
