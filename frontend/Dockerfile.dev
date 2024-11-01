@@ -1,0 +1,21 @@
+# Start from the Node.js image
+FROM node:18
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+
+# Copy the rest of the app's source code
+COPY . .
+
+# Expose the port that Vite uses (default is 5173)
+EXPOSE 5173
+
+# Command to start Vite in development mode
+CMD ["npm", "run", "dev"]
