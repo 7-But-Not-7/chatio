@@ -8,10 +8,14 @@ import { ChatModule } from './chat/chat.module';
 import { CallModule } from './call/call.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { RedisModule } from './redis/redis.module';
+import { ConfigModule } from './config/config.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-  imports: [CommonModule, AuthModule, UserModule, ChatModule, CallModule, NotificationsModule, RedisModule],
+  imports: [CommonModule, AuthModule, UserModule, ChatModule, CallModule, NotificationsModule, RedisModule, ConfigModule, DatabaseModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
