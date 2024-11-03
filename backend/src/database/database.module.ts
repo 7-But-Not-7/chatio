@@ -2,6 +2,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { DatabaseProvider } from './database.provider';
 
 @Module({
   imports: [
@@ -14,11 +15,12 @@ import { ConfigService } from '@nestjs/config';
         username: configService.get<string>('database.username'),
         password: configService.get<string>('database.password'),
         database: configService.get<string>('database.database'),
-        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+        entities: ['dist/**/*.entity.{ts,js}'],
         autoLoadEntities: true,
         synchronize: !configService.get<boolean>('isProduction') || true,
       }),
     }),
   ],
+  providers: [DatabaseProvider],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

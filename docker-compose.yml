@@ -4,7 +4,7 @@ services:
   frontend: 
     build: 
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports: 
       - 5173:5173
     volumes: 
@@ -17,7 +17,6 @@ services:
       - ./frontend/.env
     depends_on:
       - backend
-    command: npm run dev
 
   backend:
     build:
@@ -27,6 +26,11 @@ services:
       - 5000:3000
     environment:
       - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=admin
+      - DB_PASSWORD=password
+      - DB_NAME=postgres
     env_file:
       - ./backend/.env
     volumes:
@@ -58,3 +62,7 @@ services:
 volumes:
   postgres_data:
   redis_data:
+
+networks:
+  default:
+    driver: bridge
