@@ -17,6 +17,7 @@ import { DatabaseProvider } from './database.provider';
         database: configService.get<string>('database.database'),
         entities: ['dist/**/*.entity.{ts,js}'],
         autoLoadEntities: true,
+        logging: !configService.get<boolean>('isProduction') || true,
         synchronize: !configService.get<boolean>('isProduction') || true,
       }),
     }),

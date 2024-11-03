@@ -7,8 +7,14 @@ export class DatabaseProvider implements OnModuleInit {
   constructor(private readonly connection: Connection) {}
 
   async onModuleInit() {
-    if (this.connection.isInitialized) {
-      console.log('Database connection established successfully');
+    try {
+      if (this.connection.isInitialized) {
+        console.log('Database connection established successfully');
+        console.log('Connection options:', this.connection.options);
+      }
+    } catch (error) {
+      console.error('Error establishing database connection:', error);
+      console.error('Connection options:', this.connection.options);
     }
   }
 }
