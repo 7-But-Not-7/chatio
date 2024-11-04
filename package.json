@@ -9,6 +9,9 @@
         "docker:up": "docker-compose up",
         "docker:down": "docker-compose down",
         "docker:run": "docker-compose up --build",
-        "docker:build": "docker-compose build --no-cache"
+        "docker:build": "docker-compose build --no-cache",
+        "docker:db:up": "docker-compose -f docker-compose.db.yml up",
+        "docker:db:up:d": "docker-compose -f docker-compose.db.yml up -d",
+        "docker:db:down": "docker-compose -f docker-compose.db.yml down"
     }
 }

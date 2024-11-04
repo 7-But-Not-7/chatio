@@ -1,20 +1,22 @@
 // src/database/database.provider.ts
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { Connection } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class DatabaseProvider implements OnModuleInit {
-  constructor(private readonly connection: Connection) {}
+  constructor(private readonly dataSource: DataSource) {}
 
   async onModuleInit() {
     try {
-      if (this.connection.isInitialized) {
+      await this.dataSource.initialize();
+      if (this.dataSource.isInitialized) {
         console.log('Database connection established successfully');
-        console.log('Connection options:', this.connection.options);
       }
     } catch (error) {
-      console.error('Error establishing database connection:', error);
-      console.error('Connection options:', this.connection.options);
+      console.error('Error establishing database connection:');
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+      }
     }
   }
 }
