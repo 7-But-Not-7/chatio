@@ -22,6 +22,6 @@ import { DatabaseProvider } from './database.provider';
       }),
     }),
   ],
-  providers: [DatabaseProvider],
+  providers: [],
 })
 export class DatabaseModule { }

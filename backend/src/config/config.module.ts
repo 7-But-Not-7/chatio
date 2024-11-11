@@ -7,19 +7,19 @@ import productionConfig from './environment/production';
 import testConfig from './environment/test';
 
 @Module({
-    imports: [
-        NestConfigModule.forRoot({
-            isGlobal: true,
-            load: [
-                databaseConfig,
-                redisConfig,
-                process.env.NODE_ENV === 'production'
-                    ? productionConfig
-                    : process.env.NODE_ENV === 'test'
-                        ? testConfig
-                        : developmentConfig,
-            ],
-        }),
-    ],
+  imports: [
+    NestConfigModule.forRoot({
+      isGlobal: true,
+      load: [
+        databaseConfig,
+        redisConfig,
+        process.env.NODE_ENV === 'production'
+          ? productionConfig
+          : process.env.NODE_ENV === 'test'
+            ? testConfig
+            : developmentConfig,
+      ],
+    }),
+  ],
 })
-export class ConfigModule { }
+export class ConfigModule {}
