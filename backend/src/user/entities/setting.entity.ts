@@ -1,8 +1,8 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
 
-type Theme = "light" | "dark";
-type VideoType = "professional" | "casual";
+export type Theme = "light" | "dark";
+export type VideoType = "professional" | "casual";
 
 @Entity()
 export class Settings {
