@@ -1,10 +1,10 @@
-import { IsDefined, IsEmail, IsNotEmpty, IsOptional, IsString, IsStrongPassword } from "class-validator";
+import { IsDefined, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, IsStrongPassword } from "class-validator";
 
 export class RegisterBodyDto {
 
     @IsOptional()
     @IsString()
-    fullName: string;
+    fullName?: string;
 
     @IsDefined()
     @IsString()
@@ -23,6 +23,7 @@ export class RegisterBodyDto {
 
     @IsDefined()
     @IsString()
+    @IsPhoneNumber()
     @IsNotEmpty()
     phoneNumber: string;
 }
