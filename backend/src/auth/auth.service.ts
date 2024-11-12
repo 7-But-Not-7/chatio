@@ -22,12 +22,14 @@ export class AuthService {
 
     async login(loginData: LoginBodyDto, deviceId: string) {
         try {
+            // Check if device id is provided
             if(!deviceId){
                 throw new BadRequestException(ErrorMessages.NO_DEVICE_ID);
             }
             if (!loginData.email && !loginData.phoneNumber) {
                 throw new UnauthorizedException(ErrorMessages.INVALID_LOGIN_CREDENTIALS);
             }
+            // Find user by email or phone number
             let user: User;
             if (loginData.email) {
                 user = await this.userService.findByEmail(loginData.email);
@@ -86,5 +88,19 @@ export class AuthService {
             throw new InternalServerErrorException(ErrorMessages.REGISTER_FAILED);
         }
     }
+
+    async refreshToken(refreshToken: string, deviceId: string) {}
+
+    async sendEmailVerificationCode(email: string) {}
+
+    async verifyEmail(email: string, code: string) {}
+
+    async sendPhoneVerificationCode(phoneNumber: string) {}
+
+    async verifyPhoneNumber(phoneNumber: string, code: string) {}
+
+    async sendPasswordResetCode(email: string) {}
+
+    async resetPassword(email: string, code: string, password: string) {}
 
 }

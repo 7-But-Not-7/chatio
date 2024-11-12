@@ -7,6 +7,8 @@ import { CryptoService } from './services/crypto.service';
 import { SessionModule } from 'src/session/session.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SmsModule } from 'src/sms/sms.module';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
   controllers: [AuthController],
@@ -14,6 +16,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   imports: [
     UserModule,
     SessionModule,
+    SmsModule,
+    EmailModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

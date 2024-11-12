@@ -11,6 +11,9 @@ import { ConfigModule } from './config/config.module';
 import { DatabaseModule } from './database/database.module';
 import { CacheModule } from './cache/cache.module';
 import { SessionModule } from './session/session.module';
+import { EmailModule } from './email/email.module';
+import { SmsModule } from './sms/sms.module';
+import { QueueModule } from './queue/queue.module';
 
 @Module({
   imports: [
@@ -24,6 +27,9 @@ import { SessionModule } from './session/session.module';
     DatabaseModule,
     CacheModule,
     SessionModule,
+    EmailModule,
+    SmsModule,
+    QueueModule,
   ],
   controllers: [AppController],
   providers: [AppService],
