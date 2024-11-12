@@ -9,6 +9,9 @@ import { User } from 'src/user/entities/user.entity';
 import { ErrorMessages } from 'src/common/enums/error-messages.enum';
 import { RegisterBodyDto } from './dtos/register.body.dto';
 import { AuthEnum } from 'src/common/enums/auth.enum';
+import { EmailService } from 'src/email/email.service';
+import { SmsService } from 'src/sms/sms.service';
+import { EmailName } from 'src/common/enums/email-name.enum';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +20,9 @@ export class AuthService {
         private readonly userService: UserService,
         private readonly sessionService: SessionService,
         private readonly bcryptService: BcryptService,
-        private readonly cryptoService: CryptoService
+        private readonly cryptoService: CryptoService,
+        private readonly emailService: EmailService,
+        private readonly smsService: SmsService
     ) { }
 
     async login(loginData: LoginBodyDto, deviceId: string) {
@@ -91,7 +96,30 @@ export class AuthService {
 
     async refreshToken(refreshToken: string, deviceId: string) {}
 
-    async sendEmailVerificationCode(email: string) {}
+    async sendEmailVerificationCode(email: string) {
+        try {
+            // Find user by email
+            const user = await this.userService.findByEmail(email);
+            if (!user) {
+                throw new BadRequestException(ErrorMessages.EMAIL_NOT_FOUND);
+            }
+    
+            // Send email verification code
+            const code = this.cryptoService.random(4);
+            await this.emailService.sendEmail({
+                to: email,
+                subject: 'Email Verification Code',
+                template: EmailName.VERIFY_EMAIL,
+                data: {code}
+            });
+            return true;
+        } catch (error) {
+            if(error instanceof HttpException){
+                throw error;
+            }
+            throw new InternalServerErrorException(ErrorMessages.SEND_EMAIL_VERIFICATION_CODE_FAILED);
+        }
+    }
 
     async verifyEmail(email: string, code: string) {}
 

@@ -42,8 +42,8 @@ export class CryptoService {
     }
 
     random(n?: number): string {
-        if (n) return randomInt(10 * n - 1, 10 * n).toString();
-        return randomBytes(16).toString();
+        if (n) return randomInt(Math.pow(10, n - 1), Math.pow(10, n)).toString();
+        return randomBytes(16).toString('hex');
     }
 
 }

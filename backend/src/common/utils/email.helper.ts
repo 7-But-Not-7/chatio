@@ -1,6 +1,6 @@
 import { resolve } from "path";
 import { EmailName } from "../enums/email-name.enum";
-import ejs from "ejs";
+import * as ejs from "ejs";
 
 export class EmailHelper{
     // Get the email template for emails with ejs

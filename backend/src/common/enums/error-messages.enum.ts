@@ -4,5 +4,7 @@ export enum ErrorMessages{
     EMAIL_ALREADY_EXISTS = "Email already exists",
     PHONE_NUMBER_ALREADY_EXISTS = "Phone number already exists",
     LOGIN_FAILED = "Login failed",
-    REGISTER_FAILED = "Registration failed"
+    REGISTER_FAILED = "Registration failed",
+    EMAIL_NOT_FOUND = "Email not found",
+    SEND_EMAIL_VERIFICATION_CODE_FAILED = "Failed to send email verification code",
 }

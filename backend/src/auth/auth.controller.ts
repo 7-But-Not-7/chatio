@@ -6,11 +6,13 @@ import { ConfigService } from '@nestjs/config';
 import { ResponseDto } from 'src/common/dto/response.dto';
 import { SuccessMessages } from 'src/common/enums/success-messages.enum';
 import { RegisterBodyDto } from './dtos/register.body.dto';
+import { EmailDto } from './dtos/email.body.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService, private readonly configService: ConfigService) { }
 
+  // Login route
   @Post('login')
   async login(@Body() loginData: LoginBodyDto, @Headers('x-device-id') deviceId: string, @Res() res: Response) {
     const result = await this.authService.login(loginData, deviceId);
@@ -24,10 +26,18 @@ export class AuthController {
     res.send(val);
   }
 
+  // Register route
   @Post('register')
   async register(@Body() registerData: RegisterBodyDto) {
     await this.authService.register(registerData);
     return new ResponseDto(SuccessMessages.REGISTRATION_SUCCESSFUL);
+  }
+
+  // Email Verification Code route
+  @Post('email-verification')
+  async sendEmailVerificationCode(@Body() emailDto: EmailDto) {
+    await this.authService.sendEmailVerificationCode(emailDto.email);
+    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
   }
 
 }

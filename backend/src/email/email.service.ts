@@ -17,6 +17,6 @@ export class EmailService {
 
         async sendEmail(data: EmailData){
             const html = await EmailHelper.getHtml(data.template, data.data)
-            await this.emailQueue.add('sendEmail', { to: data.to, subject: data.subject, html });
+            await this.emailQueue.add({ to: data.to, subject: data.subject, html });
         }
 }
