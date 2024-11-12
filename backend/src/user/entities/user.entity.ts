@@ -1,5 +1,5 @@
 import { Message } from "src/chat/entities/chat.entity";
-import { Column, CreateDateColumn, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, Index, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Settings } from "./setting.entity";
 
 @Entity()
@@ -13,9 +13,11 @@ export class User {
     @Column({unique: true})
     username: string;
 
+    @Index()
     @Column({unique: true})
     phoneNumber: string;
 
+    @Index()
     @Column({unique: true})
     email: string;
 
