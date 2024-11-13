@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RedisClientType } from 'redis';
+import { AuthEnum } from 'src/common/enums/auth.enum';
 
 @Injectable()
 export class SessionService {
@@ -9,7 +10,7 @@ export class SessionService {
     return `session:${userId}:${deviceId}`;
   }
 
-  async createSession(userId: string, deviceId: string, value: {[key: string]: any}, ttl: number = 3600) {
+  async createSession(userId: string, deviceId: string, value: {[key: string]: any}, ttl: number = AuthEnum.SESSION_DEFAULT_EXPIRATION) {
     const key = this.generateKey(userId, deviceId);
     await this.redisSession.set(key, JSON.stringify(value), { EX: ttl });
   }
@@ -30,5 +31,14 @@ export class SessionService {
     keys.forEach(async (key) => {
       await this.redisSession.del(key);
     });
+  }
+
+  // Verifications
+  async setVerificationCode(key: string, code: string, ttl: number = AuthEnum.VERIFICATION_CODE_DEFAULT_EXPIRATION) {
+    await this.redisSession.set(key, code, { EX: ttl });
+  }
+
+  async getVerificationCode(key: string) {
+    return this.redisSession.get(key);
   }
 }
