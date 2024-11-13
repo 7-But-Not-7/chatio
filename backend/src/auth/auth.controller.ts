@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpCode, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginBodyDto } from './dtos/login.body.dto';
 import { Request, Response } from 'express';
@@ -19,6 +19,7 @@ export class AuthController {
 
   // Login route
   @Post('login')
+  @HttpCode(200)
   async login(@Body() loginData: LoginBodyDto, @Headers('x-device-id') deviceId: string, @Res() res: Response) {
     const result = await this.authService.login(loginData, deviceId);
     res.cookie('refreshToken', result.refreshToken, {
@@ -33,6 +34,7 @@ export class AuthController {
 
   // Register route
   @Post('register')
+  @HttpCode(201)
   async register(@Body() registerData: RegisterBodyDto) {
     await this.authService.register(registerData);
     return new ResponseDto(SuccessMessages.REGISTRATION_SUCCESSFUL);
@@ -40,6 +42,7 @@ export class AuthController {
 
   // Refresh Token route
   @Post('refresh-token')
+  @HttpCode(201)
   async refreshToken(@Headers('x-device-id') deviceId: string, @Req() req: Request) {
     const refreshToken = req.cookies.refreshToken;
     const result = await this.authService.refreshToken(deviceId, refreshToken);
@@ -48,6 +51,7 @@ export class AuthController {
 
   // Email Verification Code route
   @Post('email-verification')
+  @HttpCode(200)
   async sendEmailVerificationCode(@Body() emailDto: EmailDto) {
     await this.authService.sendEmailVerificationCode(emailDto.email);
     return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
@@ -55,37 +59,41 @@ export class AuthController {
 
   // Verify Email route
   @Post('verify-email')
+  @HttpCode(200)
   async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
     await this.authService.verifyEmail(verifyEmailDto.email, verifyEmailDto.code);
-    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
+    return new ResponseDto(SuccessMessages.VERIFY_EMAIL_SUCCESSFUL);
   }
 
   // Phone Verification Code route
   @Post('phone-verification')
+  @HttpCode(200)
   async sendPhoneVerificationCode(@Body() phoneDto: PhoneDto) {
     await this.authService.sendPhoneVerificationCode(phoneDto.phoneNumber);
-    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
+    return new ResponseDto(SuccessMessages.PHONE_VERIFICATION_CODE_SENT);
   }
 
   // Verify Phone route
   @Post('verify-phone')
   async verifyPhone(@Body() verifyPhoneDto: VerifyPhoneDto) {
     await this.authService.verifyPhoneNumber(verifyPhoneDto.phoneNumber, verifyPhoneDto.code);
-    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
+    return new ResponseDto(SuccessMessages.VERIFY_PHONE_SUCCESSFUL);
   }
 
   // Send Password Reset Code route
   @Post('forgot-password')
+  @HttpCode(200)
   async sendPasswordResetCode(@Body() emailOrPhoneDto: EmailorPhoneDto) {
     await this.authService.sendPasswordResetCode(emailOrPhoneDto.email, emailOrPhoneDto.phoneNumber);
-    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
+    return new ResponseDto(SuccessMessages.PASSWORD_RESET_CODE_SENT);
   }
 
   // Reset Password route
   @Post('reset-password')
+  @HttpCode(200)
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     await this.authService.resetPassword(resetPasswordDto);
-    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
+    return new ResponseDto(SuccessMessages.PASSWORD_RESET_SUCCESSFUL);
   }
 
 }

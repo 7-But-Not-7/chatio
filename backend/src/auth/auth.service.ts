@@ -69,7 +69,7 @@ export class AuthService {
 
     async register(registerData: RegisterBodyDto) {
         try {
-            // Check if user with email or phone number already exists
+            // Check if user with email, username or phone number already exists
             const userWithEmail = await this.userService.findByEmail(registerData.email);
             if (userWithEmail) {
                 throw new BadRequestException(ErrorMessages.EMAIL_ALREADY_EXISTS);
@@ -77,6 +77,11 @@ export class AuthService {
 
             const userWithPhoneNumber = await this.userService.findByPhoneNumber(registerData.phoneNumber);
             if (userWithPhoneNumber) {
+                throw new BadRequestException(ErrorMessages.PHONE_NUMBER_ALREADY_EXISTS);
+            }
+
+            const userWithUsername = await this.userService.findByUsername(registerData.username);
+            if (userWithUsername) {
                 throw new BadRequestException(ErrorMessages.PHONE_NUMBER_ALREADY_EXISTS);
             }
 
