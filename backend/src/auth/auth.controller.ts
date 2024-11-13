@@ -1,12 +1,17 @@
-import { Body, Controller, Get, Headers, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post, Req, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginBodyDto } from './dtos/login.body.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { ResponseDto } from 'src/common/dto/response.dto';
 import { SuccessMessages } from 'src/common/enums/success-messages.enum';
 import { RegisterBodyDto } from './dtos/register.body.dto';
 import { EmailDto } from './dtos/email.body.dto';
+import { VerifyEmailDto } from './dtos/verify-email.body.dto';
+import { PhoneDto } from './dtos/phone.body.dto';
+import { VerifyPhoneDto } from './dtos/verify-phone.body.dto';
+import { EmailorPhoneDto } from './dtos/email-phone.opt.dto';
+import { ResetPasswordDto } from './dtos/reset-password.body.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -21,8 +26,8 @@ export class AuthController {
       secure: this.configService.get("isProduction"),
       sameSite: 'lax',
     });
-    
-    const val = new ResponseDto(SuccessMessages.LOGIN_SUCCESSFUL, {accessToken: result.accessToken});
+
+    const val = new ResponseDto(SuccessMessages.LOGIN_SUCCESSFUL, { accessToken: result.accessToken });
     res.send(val);
   }
 
@@ -33,10 +38,53 @@ export class AuthController {
     return new ResponseDto(SuccessMessages.REGISTRATION_SUCCESSFUL);
   }
 
+  // Refresh Token route
+  @Post('refresh-token')
+  async refreshToken(@Headers('x-device-id') deviceId: string, @Req() req: Request) {
+    const refreshToken = req.cookies.refreshToken;
+    const result = await this.authService.refreshToken(deviceId, refreshToken);
+    return new ResponseDto(SuccessMessages.REFRESH_TOKEN_SUCCESSFUL, result);
+  }
+
   // Email Verification Code route
   @Post('email-verification')
   async sendEmailVerificationCode(@Body() emailDto: EmailDto) {
     await this.authService.sendEmailVerificationCode(emailDto.email);
+    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
+  }
+
+  // Verify Email route
+  @Post('verify-email')
+  async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
+    await this.authService.verifyEmail(verifyEmailDto.email, verifyEmailDto.code);
+    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
+  }
+
+  // Phone Verification Code route
+  @Post('phone-verification')
+  async sendPhoneVerificationCode(@Body() phoneDto: PhoneDto) {
+    await this.authService.sendPhoneVerificationCode(phoneDto.phoneNumber);
+    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
+  }
+
+  // Verify Phone route
+  @Post('verify-phone')
+  async verifyPhone(@Body() verifyPhoneDto: VerifyPhoneDto) {
+    await this.authService.verifyPhoneNumber(verifyPhoneDto.phoneNumber, verifyPhoneDto.code);
+    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
+  }
+
+  // Send Password Reset Code route
+  @Post('forgot-password')
+  async sendPasswordResetCode(@Body() emailOrPhoneDto: EmailorPhoneDto) {
+    await this.authService.sendPasswordResetCode(emailOrPhoneDto.email, emailOrPhoneDto.phoneNumber);
+    return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
+  }
+
+  // Reset Password route
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    await this.authService.resetPassword(resetPasswordDto);
     return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
   }
 

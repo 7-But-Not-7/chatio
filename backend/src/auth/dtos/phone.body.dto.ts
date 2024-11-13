@@ -5,5 +5,5 @@ export class PhoneDto{
     @IsDefined()
     @IsString()
     @IsPhoneNumber()
-    phone: string;
+    phoneNumber: string;
 }

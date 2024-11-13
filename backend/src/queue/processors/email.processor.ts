@@ -7,6 +7,6 @@ export class EmailProcessor{
 
     @Process()
     async sendEmail(job: Job){
-        console.log('Sending email', job);
+        console.log('Sending email', job.data);
     }
 }

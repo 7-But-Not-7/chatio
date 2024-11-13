@@ -33,6 +33,22 @@ export class UserService {
     return this.userRepository.update(id, updateUserDto);
   }
 
+  updateEmailVerificationStatus(email: string) {
+    return this.userRepository.update({email}, {emailVerifiedDate: new Date()});
+  }
+
+  updatePhoneNumberVerificationStatus(phoneNumber: string) {
+    return this.userRepository.update({phoneNumber}, {phoneNumberVerifiedDate: new Date()});
+  }
+
+  updatePasswordByEmail(email: string, password: string) {
+    return this.userRepository.update({email}, {password});
+  }
+
+  updatePasswordByPhoneNumber(phoneNumber: string, password: string) {
+    return this.userRepository.update({phoneNumber}, {password});
+  }
+
   remove(id: string) {
     return this.userRepository.delete(id);
   }

@@ -7,6 +7,6 @@ export class SmsProcessor{
 
     @Process()
     async sendSms(job: Job){
-        console.log('Sending sms', job);
+        console.log('Sending sms', job.data);
     }
 }
