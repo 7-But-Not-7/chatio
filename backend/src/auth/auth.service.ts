@@ -82,7 +82,7 @@ export class AuthService {
 
             const userWithUsername = await this.userService.findByUsername(registerData.username);
             if (userWithUsername) {
-                throw new BadRequestException(ErrorMessages.PHONE_NUMBER_ALREADY_EXISTS);
+                throw new BadRequestException(ErrorMessages.USERNAME_ALREADY_EXISTS);
             }
 
             // Hash Password
@@ -107,7 +107,6 @@ export class AuthService {
             if (!decryptedRefreshToken) {
                 throw new UnauthorizedException(ErrorMessages.INVALID_REFRESH_TOKEN);
             }
-
             // Verify refresh token
             const payload = this.jwtService.verify(decryptedRefreshToken);
             if (!payload || payload.deviceId !== deviceId) {
@@ -130,6 +129,7 @@ export class AuthService {
             const accessToken = this.jwtService.sign({ userId: user.id, deviceId }, { expiresIn: AuthEnum.ACCESS_TOKEN_EXPIRATION });
             return { accessToken };
         } catch (error) {
+            console.log(error);
             if (error instanceof HttpException) {
                 throw error;
             }
@@ -256,10 +256,11 @@ export class AuthService {
             }
             return true;
         } catch (error) {
+            console.log(error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException(ErrorMessages.SEND_PHONE_VERIFICATION_CODE_FAILED);
+            throw new InternalServerErrorException(ErrorMessages.ERROR_SENDING_PASSWORD_RESET_CODE);
         }
     }
 

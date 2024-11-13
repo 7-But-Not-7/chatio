@@ -16,11 +16,16 @@ export class UserService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
-  async create(createUserDto: CreateUserDto) {
-    const user = await this.userRepository.save(createUserDto);
+  private async setUserCache(user: User) {
     await this.cacheManager.set(`user:${user.id}`, user);
     await this.cacheManager.set(`user:email:${user.email}`, user);
     await this.cacheManager.set(`user:phone:${user.phoneNumber}`, user);
+    await this.cacheManager.set(`user:username:${user.username}`, user);
+  }
+
+  async create(createUserDto: CreateUserDto) {
+    const user = await this.userRepository.save(createUserDto);
+    await this.setUserCache(user);
     return user;
   }
 
@@ -72,24 +77,39 @@ export class UserService {
     return user;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return this.userRepository.update(id, updateUserDto);
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    await this.userRepository.update(id, updateUserDto);
+    const user = await this.userRepository.findOne({ where: { id } });
+    await this.setUserCache(user);
+    return user;
   }
 
-  updateEmailVerificationStatus(email: string) {
-    return this.userRepository.update({email}, {emailVerifiedDate: new Date()});
+  async updateEmailVerificationStatus(email: string) {
+    await this.userRepository.update({ email }, { emailVerifiedDate: new Date() });
+    const user = await this.userRepository.findOne({ where: { email } });
+    await this.setUserCache(user);
+    return user;
   }
 
-  updatePhoneNumberVerificationStatus(phoneNumber: string) {
-    return this.userRepository.update({phoneNumber}, {phoneNumberVerifiedDate: new Date()});
+  async updatePhoneNumberVerificationStatus(phoneNumber: string) {
+    await this.userRepository.update({ phoneNumber }, { phoneNumberVerifiedDate: new Date() });
+    const user = await this.userRepository.findOne({ where: { phoneNumber } });
+    await this.setUserCache(user);
+    return user;
   }
 
-  updatePasswordByEmail(email: string, password: string) {
-    return this.userRepository.update({email}, {password});
+  async updatePasswordByEmail(email: string, password: string) {
+    await this.userRepository.update({ email }, { password });
+    const user = await this.userRepository.findOne({ where: { email } });
+    await this.setUserCache(user);
+    return user;
   }
 
-  updatePasswordByPhoneNumber(phoneNumber: string, password: string) {
-    return this.userRepository.update({phoneNumber}, {password});
+  async updatePasswordByPhoneNumber(phoneNumber: string, password: string) {
+    await this.userRepository.update({ phoneNumber }, { password });
+    const user = await this.userRepository.findOne({ where: { phoneNumber } });
+    await this.setUserCache(user);
+    return user;
   }
 
   async remove(id: string) {

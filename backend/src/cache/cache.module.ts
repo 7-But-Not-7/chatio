@@ -22,6 +22,6 @@ import { CacheEnum } from 'src/common/enums/cache.enum';
     })
   ],
   providers: [CacheService],
-  exports: [CacheService]
+  exports: [CacheService, NestCacheModule]
 })
 export class CacheModule {}

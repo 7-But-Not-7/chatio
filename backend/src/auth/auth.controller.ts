@@ -45,7 +45,7 @@ export class AuthController {
   @HttpCode(201)
   async refreshToken(@Headers('x-device-id') deviceId: string, @Req() req: Request) {
     const refreshToken = req.cookies.refreshToken;
-    const result = await this.authService.refreshToken(deviceId, refreshToken);
+    const result = await this.authService.refreshToken(refreshToken, deviceId);
     return new ResponseDto(SuccessMessages.REFRESH_TOKEN_SUCCESSFUL, result);
   }
 
