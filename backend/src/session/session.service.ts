@@ -41,4 +41,10 @@ export class SessionService {
   async getVerificationCode(key: string) {
     return this.redisSession.get(key);
   }
+
+  //check session validity
+  async isSessionValid(userId: string, deviceId: string): Promise<boolean> {
+    const session = await this.getSession(userId, deviceId);
+    return !!session;
+  }
 }
