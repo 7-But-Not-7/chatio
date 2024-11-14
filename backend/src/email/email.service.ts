@@ -4,7 +4,7 @@ import { Queue } from 'bull';
 import { EmailName } from 'src/common/enums/email-name.enum';
 import { EmailHelper } from 'src/common/utils/email.helper';
 
-interface EmailData {
+export interface EmailData {
     to: string;
     subject: string;
     template: EmailName;

@@ -20,6 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.691.0",
+    "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/bull": "^10.2.2",
     "@nestjs/cache-manager": "^2.3.0",
     "@nestjs/common": "^10.0.0",
@@ -29,6 +31,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^10.4.6",
     "@nestjs/typeorm": "^10.0.2",
+    "aws-sdk": "^2.1692.0",
     "bcrypt": "^5.1.1",
     "bull": "^4.16.4",
     "cache-manager": "^5.7.6",
@@ -39,6 +42,7 @@
     "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
     "ioredis": "^5.4.1",
+    "nodemailer": "^6.9.16",
     "pg": "^8.13.1",
     "redis": "^4.7.0",
     "reflect-metadata": "^0.2.0",
