@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.691.0",
+    "@aws-sdk/client-sns": "^3.691.0",
     "@nestjs-modules/mailer": "^2.0.2",
     "@nestjs/bull": "^10.2.2",
     "@nestjs/cache-manager": "^2.3.0",

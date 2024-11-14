@@ -24,7 +24,7 @@ export class EmailProcessor {
         const params: SendEmailCommandInput = {
             Source: CompanyDetails.SUPPORT_EMAIL,
             Destination: {
-                ToAddresses: ["obikoyaadebayo55@gmail.com"]
+                ToAddresses: [to]
             },
             Message: {
                 Subject: {
