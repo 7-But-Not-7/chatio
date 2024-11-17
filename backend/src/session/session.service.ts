@@ -15,6 +15,12 @@ export class SessionService {
     await this.redisSession.set(key, JSON.stringify(value), { EX: ttl });
   }
 
+  // Set new expiration time for the session
+  async updateSessionExpiration(userId: string, deviceId: string, ttl: number = AuthEnum.SESSION_DEFAULT_EXPIRATION) {
+    const key = this.generateKey(userId, deviceId);
+    await this.redisSession.expire(key, ttl);
+  }
+
   async getSession(userId: string, deviceId: string) {
     const key = this.generateKey(userId, deviceId);
     const data = await this.redisSession.get(key);
