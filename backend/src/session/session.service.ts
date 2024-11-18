@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RedisClientType } from 'redis';
+import { DeviceDto } from 'src/auth/dtos/device.data.dto';
 import { AuthEnum } from 'src/common/enums/auth.enum';
 
 @Injectable()
@@ -8,6 +9,15 @@ export class SessionService {
 
   private generateKey(userId: string, deviceId: string) {
     return `session:${userId}:${deviceId}`;
+  }
+
+  /**
+   * Will generate key using device id
+   * @param deviceId 
+   * @returns string
+   */
+  private generateDeviceKey(deviceId: string): string {
+    return `device:${deviceId}`;
   }
 
   async createSession(userId: string, deviceId: string, value: {[key: string]: any}, ttl: number = AuthEnum.SESSION_DEFAULT_EXPIRATION) {
@@ -52,5 +62,26 @@ export class SessionService {
   async isSessionValid(userId: string, deviceId: string): Promise<boolean> {
     const session = await this.getSession(userId, deviceId);
     return !!session;
+  }
+
+  /**
+   * Will store device details in Redis using device id as key
+   * @param deviceId 
+   * @param deviceName 
+   * @param ttl 
+   */
+  async saveDeviceInfo(deviceInfo: DeviceDto, ttl: number = AuthEnum.DEVICE_EXPIRATION) {
+    const key = this.generateDeviceKey(deviceInfo.id);
+    await this.redisSession.set(key, JSON.stringify(deviceInfo), { EX: ttl });
+  }
+/**
+ * Will get device info from Redis
+ * @param deviceId 
+ * @returns string
+ */
+  async getDeviceInfo(deviceId: string) {
+    const key = this.generateDeviceKey(deviceId);
+    const data = await this.redisSession.get(key);
+    return data ? JSON.parse(data) : null;
   }
 }

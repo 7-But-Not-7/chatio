@@ -1,6 +1,8 @@
 export enum ErrorMessages{
     INVALID_LOGIN_CREDENTIALS = "Invalid login credentials",
     NO_DEVICE_ID = "No device id provided",
+    NO_DEVICE = "Device info is missing",
+    INVALID_DEVICE_DETAILS = "Please provide device details",
     EMAIL_ALREADY_EXISTS = "Email already exists",
     PHONE_NUMBER_ALREADY_EXISTS = "Phone number already exists",
     USERNAME_ALREADY_EXISTS = "Username already exists",
@@ -22,5 +24,7 @@ export enum ErrorMessages{
     INVALID_SESSION = "Session is not valid",
     INVALID_TOKEN="Authorization token missing or invalid",
     AUTHGUARD_DEFAULT= "Invalid or expired token",
-    USER_VALIDATION="An error occurred while validating or creating the user."
+    USER_VALIDATION="An error occurred while validating or creating the user.",
+    GOOGLE_AUTH="Google authentication Failed",
+    NO_USER="User does not exist"
 }
