@@ -19,4 +19,7 @@ export enum ErrorMessages{
     ERROR_RESETTING_PASSWORD = "Error resetting password",
     INVALID_REFRESH_TOKEN = "Invalid refresh token",
     SESSION_EXPIRED = "Session has expired",
+    INVALID_SESSION = "Session is not valid",
+    INVALID_TOKEN="Authorization token missing or invalid",
+    AUTHGUARD_DEFAULT= "Invalid or expired token",
 }

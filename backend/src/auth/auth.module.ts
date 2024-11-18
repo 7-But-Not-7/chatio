@@ -12,10 +12,11 @@ import { EmailModule } from 'src/email/email.module';
 import { SocialAuthController } from './social-auth.controller';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtAuthGuard } from './guards/auth.guard';
+import { SocialAuthService } from './social-auth.service';
 
 @Module({
   controllers: [AuthController, SocialAuthController],
-  providers: [AuthService, BcryptService, CryptoService, JwtAuthGuard, GoogleStrategy],
+  providers: [AuthService, BcryptService, CryptoService, JwtAuthGuard, GoogleStrategy, SocialAuthService],
   imports: [
     UserModule,
     SessionModule,

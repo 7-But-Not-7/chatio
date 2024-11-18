@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
 import { JwtAuthGuard } from './guards/auth.guard';
+import { SocialAuthService } from './social-auth.service';
 
 @Controller('social-auth')
 export class SocialAuthController {
@@ -17,6 +18,7 @@ export class SocialAuthController {
     private readonly jwtService: JwtService, 
     private readonly configService: ConfigService,
     private readonly authService: AuthService,
+    private readonly socialAuthService: SocialAuthService,
     private readonly userService: UserService,
 ) {}
 
@@ -80,7 +82,7 @@ async googleAuthCallback(
 
         // Generate tokens
         const deviceData = { name: deviceName }; // Use device name to create DeviceDto
-        const token = await this.authService.generateAccessNRefreshTkn(req.user.id, deviceId, deviceData);
+        const token = await this.socialAuthService.generateTokensAndCreateSession(req.user.id, deviceId, deviceData);
 
         // Set the refresh token in cookies
         res.cookie('refreshToken', token.refreshToken, {

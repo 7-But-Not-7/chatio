@@ -294,16 +294,4 @@ export class AuthService {
         }
     }
 
-     /**
-      * Will generate access and refresh token then create session for user
-      */
-    async generateAccessNRefreshTkn(userId: string, deviceId: string, device:  DeviceDto) {
-        const accessToken = this.jwtService.sign({ userId, deviceId }, { expiresIn: AuthEnum.ACCESS_TOKEN_EXPIRATION });
-        const _refreshToken = this.cryptoService.random();
-        const jwtrefreshToken = this.jwtService.sign({ userId, deviceId, refreshToken: _refreshToken }, { expiresIn: AuthEnum.REFRESH_TOKEN_EXPIRATION });
-        const refreshToken = this.cryptoService.encrypt(jwtrefreshToken);
-        await this.sessionService.createSession(userId, deviceId, { userId, deviceId, refreshToken: _refreshToken, device: device });
-        return {accessToken, refreshToken}
-      }
-
 }

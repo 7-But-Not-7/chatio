@@ -8,6 +8,7 @@ import {
   import { ConfigService } from '@nestjs/config';
   import { Request } from 'express';
 import { SessionService } from 'src/session/session.service';
+import { ErrorMessages } from 'src/common/enums/error-messages.enum';
   
   @Injectable()
   export class JwtAuthGuard implements CanActivate {
@@ -22,7 +23,7 @@ import { SessionService } from 'src/session/session.service';
       const authHeader = request.headers.authorization;
   
       if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        throw new UnauthorizedException('Authorization token missing or invalid');
+        throw new UnauthorizedException(ErrorMessages.INVALID_TOKEN);
       }
   
       const token = authHeader.split(' ')[1];
@@ -33,10 +34,11 @@ import { SessionService } from 'src/session/session.service';
   
         const { userId, deviceId } = payload;
   
-        // Validate the session for the user and device
-        const isSessionValid = await this.sessionService.isSessionValid(userId, deviceId);
-        if (!isSessionValid) {
-          throw new UnauthorizedException('Session is no longer valid');
+        // Gets and validate the session for the user and device
+        const session = await this.sessionService.getSession(userId, deviceId);
+        const isSessionValid = session.deviceId === deviceId;
+        if (!session || !isSessionValid) {
+          throw new UnauthorizedException(ErrorMessages.INVALID_SESSION);
         }
         //Extend user session
         await this.sessionService.updateSessionExpiration(userId, deviceId);
@@ -44,7 +46,7 @@ import { SessionService } from 'src/session/session.service';
         request.user = { userId, deviceId };
         return true;
       } catch (error) {
-        throw new UnauthorizedException('Invalid or expired token');
+        throw new UnauthorizedException(ErrorMessages.AUTHGUARD_DEFAULT);
       }
     }
   }
