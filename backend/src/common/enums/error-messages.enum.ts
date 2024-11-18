@@ -22,4 +22,5 @@ export enum ErrorMessages{
     INVALID_SESSION = "Session is not valid",
     INVALID_TOKEN="Authorization token missing or invalid",
     AUTHGUARD_DEFAULT= "Invalid or expired token",
+    USER_VALIDATION="An error occurred while validating or creating the user."
 }
