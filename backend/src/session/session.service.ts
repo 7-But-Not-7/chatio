@@ -1,7 +1,7 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { RedisClientType } from 'redis';
 import { JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';  // Import ConfigService
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class SessionService {
@@ -10,9 +10,9 @@ export class SessionService {
   constructor(
     @Inject('REDIS_SESSION') private readonly redisSession: RedisClientType,
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService,  // Inject ConfigService
+    private readonly configService: ConfigService, 
   ) {
-    // Retrieve the JWT secret from the environment variables
+
     this.jwtSecret = this.configService.get<string>('Xb0Dw3UgAZ');
   }
 
@@ -27,7 +27,7 @@ export class SessionService {
 
   async validateToken(token: string): Promise<any> {
     try {
-      return this.jwtService.verify(token, { secret: this.jwtSecret });  // Use the secret from .env
+      return this.jwtService.verify(token, { secret: this.jwtSecret });  
     } catch (error) {
       throw new UnauthorizedException('Invalid or expired token');
     }
