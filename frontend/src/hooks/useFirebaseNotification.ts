@@ -8,41 +8,28 @@ const useFirebaseNotification = (vapidKey: string= VAPID_KEY) => {
   useEffect(() => {
     const requestPermission = async () => {
       try {
-        const token = await getToken(messaging, { vapidKey });
-        if (token) {
-          console.log('Push notification token:', token);
+        const currentToken = await getToken(messaging, { vapidKey });
+        if (currentToken) {
+          console.log('Firebase Push Token:', currentToken);
+        } else {
+          console.warn('No registration token available. Request permission to generate one.');
         }
-      } catch (err) {
-        console.error('Permission denied', err);
+      } catch (error) {
+        console.error('An error occurred while retrieving token.', error);
       }
     };
 
     requestPermission();
 
     const unsubscribe = onMessage(messaging, (payload) => {
-      console.log('Message received:', payload);
-      // Handle incoming messages
+      console.log('Foreground message received:', payload);
       if (payload.notification) {
         alert(`New message: ${payload.notification.body}`);
       }
     });
 
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, [vapidKey]);
-
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/firebase-messaging-sw.js')
-        .then((registration) => {
-          console.log('Firebase Messaging Service Worker registered with scope:', registration.scope);
-        })
-        .catch((err) => {
-          console.error('Firebase Messaging Service Worker registration failed:', err);
-        });
-    }
-  }, []);
 };
 
 export default useFirebaseNotification;
