@@ -9,6 +9,7 @@ import { SuccessMessages } from 'src/common/enums/success-messages.enum';
 import { AuthService } from './auth.service';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
+import { JwtAuthGuard } from './guards/auth.guard';
 
 @Controller('social-auth')
 export class SocialAuthController {
@@ -115,7 +116,7 @@ async googleAuthCallback(
   // }
 
 @Get('test-jwt')
-@UseGuards(AuthGuard('jwt'))  // Applied JWT guard to protect this route
+@UseGuards(JwtAuthGuard)  // Applied JWT guard to protect this route
 async testJwt(@Req() req: Request & {user : {userId: string}}, @Res() res: Response) {
   const userId= req.user.userId;
   try {

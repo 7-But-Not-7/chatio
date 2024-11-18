@@ -9,14 +9,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SmsModule } from 'src/sms/sms.module';
 import { EmailModule } from 'src/email/email.module';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { JwtStrategy } from './strategies/jwt.strategy';
 import { SocialAuthController } from './social-auth.controller';
 import { GoogleStrategy } from './strategies/google.strategy';
+import { JwtAuthGuard } from './guards/auth.guard';
 
 @Module({
   controllers: [AuthController, SocialAuthController],
-  providers: [AuthService, BcryptService, CryptoService, JwtStrategy, JwtAuthGuard, GoogleStrategy],
+  providers: [AuthService, BcryptService, CryptoService, JwtAuthGuard, GoogleStrategy],
   imports: [
     UserModule,
     SessionModule,
