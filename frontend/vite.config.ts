@@ -6,6 +6,7 @@ import manifest from './public/manifest.json'
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
+  publicDir: 'public',
   plugins: [react(),
   VitePWA({
     registerType: 'autoUpdate',
@@ -59,8 +60,9 @@ export default defineConfig({
     },
     devOptions: {
       enabled: true,
+      type: ""
     },
-    manifest: manifest as any
+    manifest: manifest as any,
   })
   ],
   server: {
