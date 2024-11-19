@@ -1,17 +1,17 @@
 import { Body, Controller, Get, Headers, HttpCode, Post, Req, Res } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LoginBodyDto } from './dtos/login.body.dto';
+import { AuthService } from '../services/auth.service';
+import { LoginBodyDto } from '../dtos/login.body.dto';
 import { Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { ResponseDto } from 'src/common/dto/response.dto';
 import { SuccessMessages } from 'src/common/enums/success-messages.enum';
-import { RegisterBodyDto } from './dtos/register.body.dto';
-import { EmailDto } from './dtos/email.body.dto';
-import { VerifyEmailDto } from './dtos/verify-email.body.dto';
-import { PhoneDto } from './dtos/phone.body.dto';
-import { VerifyPhoneDto } from './dtos/verify-phone.body.dto';
-import { EmailorPhoneDto } from './dtos/email-phone.opt.dto';
-import { ResetPasswordDto } from './dtos/reset-password.body.dto';
+import { RegisterBodyDto } from '../dtos/register.body.dto';
+import { EmailDto } from '../dtos/email.body.dto';
+import { VerifyEmailDto } from '../dtos/verify-email.body.dto';
+import { PhoneDto } from '../dtos/phone.body.dto';
+import { VerifyPhoneDto } from '../dtos/verify-phone.body.dto';
+import { EmailorPhoneDto } from '../dtos/email-phone.opt.dto';
+import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
 
 @Controller('auth')
 export class AuthController {

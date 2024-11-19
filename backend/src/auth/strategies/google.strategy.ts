@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { ProfileHelper } from "src/common/utils/google-profile.helper"
-import { SocialAuthService } from '../social-auth.service';
+import { SocialAuthService } from '../services/social-auth.service';
 
 
 @Injectable()

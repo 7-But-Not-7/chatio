@@ -2,18 +2,18 @@ import { BadRequestException, HttpException, Injectable, InternalServerErrorExce
 import { JwtService } from '@nestjs/jwt';
 import { SessionService } from 'src/session/session.service';
 import { UserService } from 'src/user/user.service';
-import { BcryptService } from './services/bcrypt.service';
-import { CryptoService } from './services/crypto.service';
-import { LoginBodyDto } from './dtos/login.body.dto';
+import { BcryptService } from './bcrypt.service';
+import { CryptoService } from './crypto.service';
+import { LoginBodyDto } from '../dtos/login.body.dto';
 import { User } from 'src/user/entities/user.entity';
 import { ErrorMessages } from 'src/common/enums/error-messages.enum';
-import { RegisterBodyDto } from './dtos/register.body.dto';
+import { RegisterBodyDto } from '../dtos/register.body.dto';
 import { AuthEnum } from 'src/common/enums/auth.enum';
 import { EmailService } from 'src/email/email.service';
 import { SmsService } from 'src/sms/sms.service';
 import { EmailName } from 'src/common/enums/email-name.enum';
-import { ResetPasswordDto } from './dtos/reset-password.body.dto';
-import { DeviceDto } from './dtos/device.data.dto';
+import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
+import { DeviceDto } from '../dtos/device.data.dto';
 
 @Injectable()
 export class AuthService {
@@ -136,7 +136,7 @@ export class AuthService {
             }
             throw new InternalServerErrorException(ErrorMessages.INVALID_REFRESH_TOKEN);
         }
-     }
+    }
 
     async sendEmailVerificationCode(email: string) {
         try {
@@ -265,7 +265,7 @@ export class AuthService {
         }
     }
 
-    async resetPassword({email, phoneNumber, code, password}: ResetPasswordDto) {
+    async resetPassword({ email, phoneNumber, code, password }: ResetPasswordDto) {
         try {
             // Check code by email or phone number
             let savedCode: string;
