@@ -9,8 +9,10 @@ interface SignUpStepState {
     reset: () => void;
 }
 
-const steps: Step[] = ["register", "email-phone", "success"];
 type Step = "register" | "email-phone" | "success";
+
+const steps: Step[] = ["register", "email-phone", "success"];
+
 export const useSignUpStep = create(
     persist<SignUpStepState>(
         (set) => ({

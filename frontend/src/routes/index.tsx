@@ -19,7 +19,7 @@ const AppRoutes: React.FC = () => {
         </Route>
 
         {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route path="*" element={<Navigate to="/auth" />} />
       </Routes>
     </Router>
   );
