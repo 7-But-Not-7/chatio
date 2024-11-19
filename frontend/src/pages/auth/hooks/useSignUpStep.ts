@@ -1,41 +1,16 @@
 import { create } from "zustand";
-
-// Using Linked List to manage the steps
-
-interface StepNode {
-    step: number | string;
-    next: StepNode | null;
-    prev: StepNode | null;
-}
+import { createLinkedList } from "../../../utils/create-linked-list";
+import { StepNode } from "../../../types";
 
 interface SignUpStepState {
-    currentStep: StepNode;
+    currentStep: StepNode<typeof steps[number]>; // The current step
     next: () => void;
     prev: () => void;
     reset: () => void;
 }
 
-// Function to create a linked list from the given steps
-const createLinkedList = (steps: (number | string)[]): StepNode => {
-    const nodes: StepNode[] = steps.map((step) => ({
-        step,
-        next: null,
-        prev: null,
-    }));
+const steps = ["sign-up", "otp", "profile", "success"];
 
-    // Linking the nodes together
-    nodes.forEach((node, index) => {
-        if (index > 0) {
-            node.prev = nodes[index - 1];   // Set the prev reference
-            nodes[index - 1].next = node;   // Set the next reference
-        }
-    });
-
-    return nodes[0];
-};
-
-
-const steps = [0, 1, 2, 3];
 const initialStep = createLinkedList(steps);
 
 // Create the Zustand store with the necessary actions and state
