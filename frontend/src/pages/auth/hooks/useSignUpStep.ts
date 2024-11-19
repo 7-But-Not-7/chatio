@@ -2,15 +2,15 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 interface SignUpStepState {
-    currentStep: string;
-    steps: string[]; 
-    next: () => void; 
-    prev: () => void; 
+    currentStep: Step;
+    steps: Step[];
+    next: () => void;
+    prev: () => void;
     reset: () => void;
 }
 
-const steps = ["sign-up", "otp", "profile", "success"]; // Define your steps
-
+const steps: Step[] = ["register", "email-phone", "success"];
+type Step = "register" | "email-phone" | "success";
 export const useSignUpStep = create(
     persist<SignUpStepState>(
         (set) => ({
