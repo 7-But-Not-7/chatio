@@ -13,7 +13,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     super({
       clientID: configService.get<string>('oauth.googleClientId'),
       clientSecret: configService.get<string>('oauth.googleClientSecret'),
-      callbackURL: 'http://localhost:3000/api/v1/auth/google/callback',
+      callbackURL: `${configService.get<string>("apiUrl")}/auth/google/callback`,
       scope: [
         'email',
         'profile',
@@ -23,7 +23,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
+  async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<void> {
     const user = ProfileHelper.extractProfileFields(profile);
     done(null, user);
   }
