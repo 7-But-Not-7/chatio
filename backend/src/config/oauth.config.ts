@@ -1,7 +1,7 @@
 // src/config/auth.config.ts
 import { registerAs } from '@nestjs/config';
 
-export default registerAs('auth', () => ({
+export default registerAs('oauth', () => ({
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   appleClientId: process.env.APPLE_CLIENT_ID,

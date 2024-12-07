@@ -1,7 +1,10 @@
+import { AppEnum } from "src/common/enums/app.enum";
+
 // config/environment/development.ts
 export default () => ({
     isProduction: false,
     debug: true,
-    apiUrl: 'http://localhost:5000/api/v1',
+    baseUrl: process.env.BASE_URL || AppEnum.BASE_URL,
+    apiUrl: process.env.API_URL || `${AppEnum.BASE_URL}/${AppEnum.API_PREFIX}`,
   });
   

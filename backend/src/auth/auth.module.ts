@@ -9,7 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SmsModule } from 'src/sms/sms.module';
 import { EmailModule } from 'src/email/email.module';
-import { SocialAuthController } from './controllers/social-auth.controller';
+import { SocialAuthController } from './controllers/social.auth.controller';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtAuthGuard } from './guards/auth.guard';
 import { SocialAuthService } from './services/social-auth.service';
