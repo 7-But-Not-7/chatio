@@ -2,8 +2,8 @@ import { BadRequestException, HttpException, Injectable, InternalServerErrorExce
 import { JwtService } from '@nestjs/jwt';
 import { SessionService } from 'src/session/session.service';
 import { UserService } from 'src/user/user.service';
-import { BcryptService } from './bcrypt.service';
-import { CryptoService } from './crypto.service';
+import { BcryptService } from '../providers/bcrypt.service';
+import { CryptoService } from '../providers/crypto.service';
 import { LoginBodyDto } from '../dtos/login.body.dto';
 import { User } from 'src/user/entities/user.entity';
 import { ErrorMessages } from 'src/common/enums/error-messages.enum';

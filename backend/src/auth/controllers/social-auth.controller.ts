@@ -18,7 +18,7 @@ import { plainToInstance } from 'class-transformer';
 import { validateSync } from 'class-validator';
 import { AuthUrlHelper } from 'src/common/utils/auth-url.helper';
 
-@Controller('social-auth')
+@Controller('auth')
 export class SocialAuthController {
   constructor(
     private readonly configService: ConfigService,
@@ -113,19 +113,6 @@ export class SocialAuthController {
     }
   }
 
-
-  // @Get('apple')
-  // @UseGuards(AuthGuard('apple'))
-  // async appleAuth() {
-  //   // initiates Apple login
-  // }
-
-  // @Get('apple/callback')
-  // @UseGuards(AuthGuard('apple'))
-  // async appleAuthCallback(@Req() req: Request) {
-  //   const jwt = (req.user);
-  //   return new ResponseDto(SuccessMessages.LOGIN_SUCCESSFUL, { accessToken: jwt });
-  // }
 
   @Get('test-jwt')
   @UseGuards(JwtAuthGuard)  // Applied JWT guard to protect this route

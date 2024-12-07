@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { RedisClientType } from 'redis';
 import { DeviceDto } from 'src/auth/dtos/device.data.dto';
 import { AuthEnum } from 'src/common/enums/auth.enum';
+import { SessionData } from '.';
 
 @Injectable()
 export class SessionService {
@@ -11,16 +12,11 @@ export class SessionService {
     return `session:${userId}:${deviceId}`;
   }
 
-  /**
-   * Will generate key using device id
-   * @param deviceId 
-   * @returns string
-   */
   private generateDeviceKey(deviceId: string): string {
     return `device:${deviceId}`;
   }
 
-  async createSession(userId: string, deviceId: string, value: {[key: string]: any}, ttl: number = AuthEnum.SESSION_DEFAULT_EXPIRATION) {
+  async createSession(userId: string, deviceId: string, value: SessionData, ttl: number = AuthEnum.SESSION_DEFAULT_EXPIRATION) {
     const key = this.generateKey(userId, deviceId);
     await this.redisSession.set(key, JSON.stringify(value), { EX: ttl });
   }
@@ -31,7 +27,7 @@ export class SessionService {
     await this.redisSession.expire(key, ttl);
   }
 
-  async getSession(userId: string, deviceId: string) {
+  async getSession(userId: string, deviceId: string): Promise<SessionData | null> {
     const key = this.generateKey(userId, deviceId);
     const data = await this.redisSession.get(key);
     return data ? JSON.parse(data) : null;
@@ -64,21 +60,13 @@ export class SessionService {
     return !!session;
   }
 
-  /**
-   * Will store device details in Redis using device id as key
-   * @param deviceId 
-   * @param deviceName 
-   * @param ttl 
-   */
+  // Will store device details in Redis using device id as key
   async saveDeviceInfo(deviceInfo: DeviceDto, ttl: number = AuthEnum.DEVICE_EXPIRATION) {
     const key = this.generateDeviceKey(deviceInfo.id);
     await this.redisSession.set(key, JSON.stringify(deviceInfo), { EX: ttl });
   }
-/**
- * Will get device info from Redis
- * @param deviceId 
- * @returns string
- */
+
+  // Will get device info from Redis
   async getDeviceInfo(deviceId: string) {
     const key = this.generateDeviceKey(deviceId);
     const data = await this.redisSession.get(key);

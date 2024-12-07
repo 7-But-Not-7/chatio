@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SessionService } from 'src/session/session.service';
 import { UserService } from 'src/user/user.service';
-import { CryptoService } from './crypto.service';
+import { CryptoService } from '../providers/crypto.service';
 import { DeviceDto } from '../dtos/device.data.dto';
 import { AuthEnum } from 'src/common/enums/auth.enum';
 import { ProfileData } from "src/common/utils/google-profile.helper"
