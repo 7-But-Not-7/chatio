@@ -1,7 +1,8 @@
 import { GoogleProfile, GoogleRawProfile } from "src/auth";
 
-export class ProfileHelper {
-  static extractProfileFields(profile: GoogleRawProfile): GoogleProfile {
+export class AuthHelper {
+
+  static getGoogleProfile(profile: GoogleRawProfile): GoogleProfile {
     return {
       id: profile.id,
       displayName: profile.displayName,
@@ -11,4 +12,7 @@ export class ProfileHelper {
       name: profile.name
     }
   }
+
+  static generateGoogle
+
 }
