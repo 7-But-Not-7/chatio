@@ -14,14 +14,14 @@ export class User {
     username: string;
 
     @Index()
-    @Column({unique: true})
+    @Column({unique: true, nullable: true})
     phoneNumber: string;
 
     @Index()
     @Column({unique: true})
     email: string;
 
-    @Column()
+    @Column({nullable: true})
     password: string;
 
     @Column({ nullable: true })

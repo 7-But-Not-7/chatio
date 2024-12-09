@@ -14,7 +14,7 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-  ) {}
+  ) { }
 
   private async setUserCache(user: User) {
     await this.cacheManager.set(`user:${user.id}`, user);
@@ -90,7 +90,7 @@ export class UserService {
   }
 
   async createGoogleUser(createUserDto: Omit<CreateUserDto, "password">, googleId: string) {
-    const user = await this.userRepository.save({ ...createUserDto, googleId });
+    const user = await this.userRepository.save({ ...createUserDto, googleId, emailVerifiedDate: new Date() });
     await this.setUserCache(user);
     await this.cacheManager.set(`user:googleId:${googleId}`, user);
     return user;

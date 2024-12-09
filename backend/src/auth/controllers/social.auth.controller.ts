@@ -27,6 +27,7 @@ export class SocialAuthController {
   async googleAuth(@Query('device', new ParseAndValidate(DeviceDto)) device: string, @Res() res: Response) {
     //Save Device Info
     let deviceData = device as unknown as DeviceDto;
+    console.log(deviceData)
     await this.socialAuthService.saveDeviceInfo(deviceData);
 
     return { url: `${AuthEndpoints.GOOGLE_REDIRECT}?state=${deviceData.id}`, statusCode: HttpStatus.FOUND };
@@ -44,6 +45,7 @@ export class SocialAuthController {
     @Req() req: Request & { user: GoogleProfile },
     @Res() res: Response
   ) {
+    console.log(req.query)
     const { accessToken, refreshToken } = await this.socialAuthService.createOrLogin(req.user, deviceId);
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,

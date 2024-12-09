@@ -15,6 +15,7 @@ export interface GoogleRawProfile {
     emails: { value: string }[];
     photos: { value : string }[];
     phoneNumbers: { value: string }[];
+    gender: string | null;
     name: Record<string, any> | null;
 
 }
@@ -26,4 +27,5 @@ export interface GoogleProfile {
     phoneNumber: string;
     name: Record<string, any>;
     profilePicture: string;
+    gender: string | null;
 }

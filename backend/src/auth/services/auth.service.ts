@@ -13,7 +13,7 @@ import { EmailService } from 'src/email/email.service';
 import { SmsService } from 'src/sms/sms.service';
 import { EmailName } from 'src/common/enums/email-name.enum';
 import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
-import { DeviceDto } from '../dtos/device.data.dto';
+import { RandomHelper } from 'src/common/utils/random.helper';
 
 @Injectable()
 export class AuthService {
@@ -147,7 +147,7 @@ export class AuthService {
             }
 
             // Save email verification code to session
-            const code = this.cryptoService.random(4);
+            const code = RandomHelper.generateRandomNumber(4).toString();
             await this.sessionService.setVerificationCode(`email-verification:${email}`, code);
 
             // Send email verification code
@@ -194,7 +194,7 @@ export class AuthService {
             }
 
             // Save phone verification code to session
-            const code = this.cryptoService.random(4);
+            const code = RandomHelper.generateRandomNumber(4).toString();
             await this.sessionService.setVerificationCode(`phone-verification:${phoneNumber}`, code);
 
             // Send phone verification code
@@ -241,7 +241,7 @@ export class AuthService {
             }
 
             // Save password reset code to session
-            const code = this.cryptoService.random(4);
+            const code = RandomHelper.generateRandomNumber(4).toString();
             await this.sessionService.setVerificationCode(`password-reset:${email || phoneNumber}`, code);
 
             // Send password reset code

@@ -14,16 +14,18 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       clientID: configService.get<string>('oauth.googleClientId'),
       clientSecret: configService.get<string>('oauth.googleClientSecret'),
       callbackURL: `${configService.get<string>("apiUrl")}/auth/google/callback`,
+      passReqToCallback: true,
+      state: true,
       scope: [
         'email',
         'profile',
-        'https://www.googleapis.com/auth/user.phonenumbers.read', // Scope for phone numbers
-        'https://www.googleapis.com/auth/user.gender.read', // Scope for gender
+        'https://www.googleapis.com/auth/user.phonenumbers.read',
+        'https://www.googleapis.com/auth/user.gender.read',
       ],
     });
   }
 
-  async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<void> {
+  async validate(req: any, accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<void> {
     const user = AuthHelper.getGoogleProfile(profile);
     done(null, user);
   }
