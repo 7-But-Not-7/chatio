@@ -11,5 +11,6 @@ export enum AuthEndpoints{
     LOGOUT='logout',
     LOGOUT_ALL='logout-all',
     GOOGLE_AUTH='google',
+    GOOGLE_REDIRECT='google/redirect',
     GOOGLE_AUTH_CALLBACK='google/callback',
 }

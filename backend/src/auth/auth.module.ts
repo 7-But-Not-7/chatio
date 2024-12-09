@@ -12,7 +12,7 @@ import { EmailModule } from 'src/email/email.module';
 import { SocialAuthController } from './controllers/social.auth.controller';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtAuthGuard } from './guards/auth.guard';
-import { SocialAuthService } from './services/social-auth.service';
+import { SocialAuthService } from './services/social.auth.service';
 
 @Module({
   controllers: [AuthController, SocialAuthController],

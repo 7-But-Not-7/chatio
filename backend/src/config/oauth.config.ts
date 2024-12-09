@@ -9,5 +9,4 @@ export default registerAs('oauth', () => ({
   appleKeyId: process.env.APPLE_KEY_ID,
   applePrivateKey: process.env.APPLE_PRIVATE_KEY.replace(/\\n/g, '\n'), // handle newlines in env var
   jwtSecret: process.env.JWT_SECRET,
-  backendUrl: process.env.BACKEND_URL,
 }));

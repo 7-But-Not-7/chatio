@@ -11,7 +11,7 @@ async function bootstrap() {
   }));
   // Add prefix
   app.setGlobalPrefix('api/v1');
-  app.use(cookieParser());
+  app.use(cookieParser(process.env.COOKIE_SECRET));
   await app.listen(3000);
 }
 bootstrap();

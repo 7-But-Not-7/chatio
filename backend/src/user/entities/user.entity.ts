@@ -31,10 +31,16 @@ export class User {
     profilePicture?: string;
 
     @Column({default: null})
-    emailVerifiedDate: Date;
+    emailVerifiedDate?: Date;
 
     @Column({default: null})
-    phoneNumberVerifiedDate: Date;
+    phoneNumberVerifiedDate?: Date;
+
+    @Column({default: null})
+    googleId?: string;
+
+    @Column({default: null})
+    appleId?: string;
 
     @CreateDateColumn()
     createdAt: Date;
