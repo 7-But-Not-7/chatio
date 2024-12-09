@@ -114,6 +114,10 @@ export class AuthService {
                 throw new UnauthorizedException(ErrorMessages.INVALID_REFRESH_TOKEN);
             }
 
+            if(!deviceId){
+                throw new UnauthorizedException(ErrorMessages.NO_DEVICE_ID);
+            }
+
             // Check if session exists and is valid
             const session = await this.sessionService.getSession(payload.userId, deviceId);
             if (!session || session.refreshToken !== payload.refreshToken) {

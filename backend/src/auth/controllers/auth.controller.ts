@@ -44,10 +44,15 @@ export class AuthController {
   // Refresh Token route
   @Post(AuthEndpoints.REFRESH_TOKEN)
   @HttpCode(201)
-  async refreshToken(@Headers('x-device-id') deviceId: string, @Req() req: Request) {
+  async refreshToken(@Headers('x-device-id') deviceId: string, @Req() req: Request, @Res() res: Response) {
     const refreshToken = req.cookies.refreshToken;
     const result = await this.authService.refreshToken(refreshToken, deviceId);
-    return new ResponseDto(SuccessMessages.REFRESH_TOKEN_SUCCESSFUL, result);
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      secure: this.configService.get("isProduction"),
+      sameSite: 'lax',
+    });
+    res.send(new ResponseDto(SuccessMessages.REFRESH_TOKEN_SUCCESSFUL, result));
   }
 
   // Email Verification Code route
