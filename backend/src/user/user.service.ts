@@ -19,7 +19,7 @@ export class UserService {
   private async setUserCache(user: User) {
     await this.cacheManager.set(`user:${user.id}`, user);
     await this.cacheManager.set(`user:email:${user.email}`, user);
-    await this.cacheManager.set(`user:phone:${user.phoneNumber}`, user);
+    user.phoneNumber && await this.cacheManager.set(`user:phone:${user.phoneNumber}`, user);
     await this.cacheManager.set(`user:username:${user.username}`, user);
   }
 

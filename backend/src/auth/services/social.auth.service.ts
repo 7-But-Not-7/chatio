@@ -47,6 +47,7 @@ export class SocialAuthService {
       email: profile.email,
       username: profile.displayName,
       phoneNumber: profile.phoneNumber,
+      fullName: profile.name?.givenName + ' ' + profile.name?.familyName,
     }, profile.id);
 
     return newUser;

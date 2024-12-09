@@ -6,5 +6,6 @@ export default () => ({
     debug: false,
     baseUrl: process.env.BASE_URL,
     apiUrl: `${process.env.API_URL}/${AppEnum.API_PREFIX}`,
+    clientUrl: process.env.CLIENT_URL || AppEnum.CLIENT_URL,
   });
   
