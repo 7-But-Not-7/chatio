@@ -1,4 +1,3 @@
-// src/auth/controllers/social-auth.controller.ts
 import { Controller, Get, UseGuards, Req, Query, HttpCode, Res, Redirect, HttpStatus } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
