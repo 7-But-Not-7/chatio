@@ -5,6 +5,7 @@ import redisConfig from './redis.config';
 import developmentConfig from './environment/development';
 import productionConfig from './environment/production';
 import testConfig from './environment/test';
+import oauthConfig from './oauth.config';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import testConfig from './environment/test';
       load: [
         databaseConfig,
         redisConfig,
+        oauthConfig,
         process.env.NODE_ENV === 'production'
           ? productionConfig
           : process.env.NODE_ENV === 'test'
