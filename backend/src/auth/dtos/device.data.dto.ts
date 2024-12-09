@@ -4,5 +4,9 @@ export class DeviceDto{
 
     @IsDefined()
     @IsString()
+    id: string;
+
+    @IsDefined()
+    @IsString()
     name: string;
 }

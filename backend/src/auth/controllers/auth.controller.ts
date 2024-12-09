@@ -1,24 +1,25 @@
 import { Body, Controller, Get, Headers, HttpCode, Post, Req, Res } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { LoginBodyDto } from './dtos/login.body.dto';
+import { AuthService } from '../services/auth.service';
+import { LoginBodyDto } from '../dtos/login.body.dto';
 import { Request, Response } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { ResponseDto } from 'src/common/dto/response.dto';
 import { SuccessMessages } from 'src/common/enums/success-messages.enum';
-import { RegisterBodyDto } from './dtos/register.body.dto';
-import { EmailDto } from './dtos/email.body.dto';
-import { VerifyEmailDto } from './dtos/verify-email.body.dto';
-import { PhoneDto } from './dtos/phone.body.dto';
-import { VerifyPhoneDto } from './dtos/verify-phone.body.dto';
-import { EmailorPhoneDto } from './dtos/email-phone.opt.dto';
-import { ResetPasswordDto } from './dtos/reset-password.body.dto';
+import { RegisterBodyDto } from '../dtos/register.body.dto';
+import { EmailDto } from '../dtos/email.body.dto';
+import { VerifyEmailDto } from '../dtos/verify-email.body.dto';
+import { PhoneDto } from '../dtos/phone.body.dto';
+import { VerifyPhoneDto } from '../dtos/verify-phone.body.dto';
+import { EmailorPhoneDto } from '../dtos/email-phone.opt.dto';
+import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
+import { AuthEndpoints } from 'src/common/enums/endpoints.enum';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService, private readonly configService: ConfigService) { }
 
   // Login route
-  @Post('login')
+  @Post(AuthEndpoints.LOGIN)
   @HttpCode(200)
   async login(@Body() loginData: LoginBodyDto, @Headers('x-device-id') deviceId: string, @Res() res: Response) {
     const result = await this.authService.login(loginData, deviceId);
@@ -33,7 +34,7 @@ export class AuthController {
   }
 
   // Register route
-  @Post('register')
+  @Post(AuthEndpoints.REGISTER)
   @HttpCode(201)
   async register(@Body() registerData: RegisterBodyDto) {
     await this.authService.register(registerData);
@@ -41,7 +42,7 @@ export class AuthController {
   }
 
   // Refresh Token route
-  @Post('refresh-token')
+  @Post(AuthEndpoints.REFRESH_TOKEN)
   @HttpCode(201)
   async refreshToken(@Headers('x-device-id') deviceId: string, @Req() req: Request) {
     const refreshToken = req.cookies.refreshToken;
@@ -50,7 +51,7 @@ export class AuthController {
   }
 
   // Email Verification Code route
-  @Post('email-verification')
+  @Post(AuthEndpoints.EMAIL_VERIFICATION)
   @HttpCode(200)
   async sendEmailVerificationCode(@Body() emailDto: EmailDto) {
     await this.authService.sendEmailVerificationCode(emailDto.email);
@@ -58,7 +59,7 @@ export class AuthController {
   }
 
   // Verify Email route
-  @Post('verify-email')
+  @Post(AuthEndpoints.VERIFY_EMAIL)
   @HttpCode(200)
   async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
     await this.authService.verifyEmail(verifyEmailDto.email, verifyEmailDto.code);
@@ -66,7 +67,7 @@ export class AuthController {
   }
 
   // Phone Verification Code route
-  @Post('phone-verification')
+  @Post(AuthEndpoints.PHONE_VERIFICATION)
   @HttpCode(200)
   async sendPhoneVerificationCode(@Body() phoneDto: PhoneDto) {
     await this.authService.sendPhoneVerificationCode(phoneDto.phoneNumber);
@@ -74,14 +75,14 @@ export class AuthController {
   }
 
   // Verify Phone route
-  @Post('verify-phone')
+  @Post(AuthEndpoints.VERIFY_PHONE)
   async verifyPhone(@Body() verifyPhoneDto: VerifyPhoneDto) {
     await this.authService.verifyPhoneNumber(verifyPhoneDto.phoneNumber, verifyPhoneDto.code);
     return new ResponseDto(SuccessMessages.VERIFY_PHONE_SUCCESSFUL);
   }
 
   // Send Password Reset Code route
-  @Post('forgot-password')
+  @Post(AuthEndpoints.FORGOT_PASSWORD)
   @HttpCode(200)
   async sendPasswordResetCode(@Body() emailOrPhoneDto: EmailorPhoneDto) {
     await this.authService.sendPasswordResetCode(emailOrPhoneDto.email, emailOrPhoneDto.phoneNumber);
@@ -89,7 +90,7 @@ export class AuthController {
   }
 
   // Reset Password route
-  @Post('reset-password')
+  @Post(AuthEndpoints.RESET_PASSWORD)
   @HttpCode(200)
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     await this.authService.resetPassword(resetPasswordDto);

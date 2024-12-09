@@ -14,12 +14,12 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
-  ) {}
+  ) { }
 
   private async setUserCache(user: User) {
     await this.cacheManager.set(`user:${user.id}`, user);
     await this.cacheManager.set(`user:email:${user.email}`, user);
-    await this.cacheManager.set(`user:phone:${user.phoneNumber}`, user);
+    user.phoneNumber && await this.cacheManager.set(`user:phone:${user.phoneNumber}`, user);
     await this.cacheManager.set(`user:username:${user.username}`, user);
   }
 
@@ -74,6 +74,25 @@ export class UserService {
     if (user) {
       await this.cacheManager.set(`user:username:${username}`, user);
     }
+    return user;
+  }
+
+  async findByGoogleId(googleId: string) {
+    const cachedUser = await this.cacheManager.get<User>(`user:googleId:${googleId}`);
+    if (cachedUser) {
+      return cachedUser;
+    }
+    const user = await this.userRepository.findOne({ where: { googleId } });
+    if (user) {
+      await this.cacheManager.set(`user:googleId:${googleId}`, user);
+    }
+    return user;
+  }
+
+  async createGoogleUser(createUserDto: Omit<CreateUserDto, "password">, googleId: string) {
+    const user = await this.userRepository.save({ ...createUserDto, googleId, emailVerifiedDate: new Date() });
+    await this.setUserCache(user);
+    await this.cacheManager.set(`user:googleId:${googleId}`, user);
     return user;
   }
 
