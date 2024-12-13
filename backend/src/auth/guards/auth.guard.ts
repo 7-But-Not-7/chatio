@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { SessionService } from 'src/session/session.service';
 import { ErrorMessages } from 'src/common/enums/error-messages.enum';
-import { AccessTokenPayload } from '..';
+import { AccessTokenPayload } from '../../common/types/auth';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {

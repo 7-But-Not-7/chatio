@@ -14,7 +14,7 @@ import { EmailorPhoneDto } from '../dtos/email-phone.opt.dto';
 import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
 import { AuthEndpoints } from 'src/common/enums/endpoints.enum';
 import { JwtAuthGuard } from '../guards/auth.guard';
-import { AuthenticatedRequest } from '..';
+import { AuthenticatedRequest } from '../../common/types/auth';
 
 @Controller('auth')
 export class AuthController {
