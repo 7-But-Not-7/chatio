@@ -155,7 +155,7 @@ export class AuthService {
             await this.sessionService.setVerificationCode(`email-verification:${email}`, code);
 
             // Send email verification code
-            await this.emailService.sendEmail({
+            this.emailService.sendEmail({
                 to: email,
                 subject: 'Email Verification Code',
                 template: EmailName.VERIFY_EMAIL,
@@ -202,7 +202,7 @@ export class AuthService {
             await this.sessionService.setVerificationCode(`phone-verification:${phoneNumber}`, code);
 
             // Send phone verification code
-            await this.smsService.sendSms(phoneNumber, `Your phone verification code is ${code}`);
+            this.smsService.sendSms(phoneNumber, `Your phone verification code is ${code}`);
             return true;
         } catch (error) {
             if (error instanceof HttpException) {
@@ -250,14 +250,14 @@ export class AuthService {
 
             // Send password reset code
             if (email) {
-                await this.emailService.sendEmail({
+                this.emailService.sendEmail({
                     to: email,
                     subject: 'Password Reset Code',
                     template: EmailName.PASSWORD_RESET,
                     data: { code }
                 });
             } else {
-                await this.smsService.sendSms(phoneNumber, `Your password reset code is ${code}`);
+                this.smsService.sendSms(phoneNumber, `Your password reset code is ${code}`);
             }
             return true;
         } catch (error) {
@@ -298,4 +298,5 @@ export class AuthService {
         }
     }
 
+    
 }
