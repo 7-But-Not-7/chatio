@@ -31,4 +31,5 @@ export enum ErrorMessages{
     SAVING_DEVICE_INFO_FAILDED="Error saving device information",
     SINGLE_LOGOUT_FAILED="Error logging out user",
     LOGOUT_ALL_FAILED="Error logging out all devices",
+    VERIFY_SESSION_FAILED="Error verifying session",
 }

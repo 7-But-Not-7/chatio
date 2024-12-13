@@ -121,4 +121,12 @@ export class AuthController {
     return new ResponseDto(SuccessMessages.LOGOUT_ALL_SUCCESSFUL);
   }
 
+  // Verify Session route
+  @UseGuards(JwtAuthGuard)
+  @Get(AuthEndpoints.VERIFY_SESSION)
+  @HttpCode(HttpStatus.OK)
+  async verifySession(@Req() req: AuthenticatedRequest) {
+    const result = this.authService.verifySession(req.authInfo.userId, req.authInfo.deviceId);
+    return new ResponseDto(SuccessMessages.SESSION_VALID, result);
+  }
 }

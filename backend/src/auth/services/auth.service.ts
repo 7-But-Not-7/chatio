@@ -321,4 +321,8 @@ export class AuthService {
             throw new InternalServerErrorException(ErrorMessages.LOGOUT_ALL_FAILED);
         }
     }
+
+    verifySession(userId: string, deviceId: string) {
+        return { userId, deviceId };
+    }
 }
