@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, HttpCode, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { LoginBodyDto } from '../dtos/login.body.dto';
 import { Request, Response } from 'express';
@@ -13,6 +13,8 @@ import { VerifyPhoneDto } from '../dtos/verify-phone.body.dto';
 import { EmailorPhoneDto } from '../dtos/email-phone.opt.dto';
 import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
 import { AuthEndpoints } from 'src/common/enums/endpoints.enum';
+import { JwtAuthGuard } from '../guards/auth.guard';
+import { AuthenticatedRequest } from '..';
 
 @Controller('auth')
 export class AuthController {
@@ -20,7 +22,7 @@ export class AuthController {
 
   // Login route
   @Post(AuthEndpoints.LOGIN)
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async login(@Body() loginData: LoginBodyDto, @Headers('x-device-id') deviceId: string, @Res() res: Response) {
     const result = await this.authService.login(loginData, deviceId);
     res.cookie('refreshToken', result.refreshToken, {
@@ -35,7 +37,7 @@ export class AuthController {
 
   // Register route
   @Post(AuthEndpoints.REGISTER)
-  @HttpCode(201)
+  @HttpCode(HttpStatus.CREATED)
   async register(@Body() registerData: RegisterBodyDto) {
     await this.authService.register(registerData);
     return new ResponseDto(SuccessMessages.REGISTRATION_SUCCESSFUL);
@@ -57,7 +59,7 @@ export class AuthController {
 
   // Email Verification Code route
   @Post(AuthEndpoints.EMAIL_VERIFICATION)
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async sendEmailVerificationCode(@Body() emailDto: EmailDto) {
     await this.authService.sendEmailVerificationCode(emailDto.email);
     return new ResponseDto(SuccessMessages.EMAIL_VERIFICATION_CODE_SENT);
@@ -65,7 +67,7 @@ export class AuthController {
 
   // Verify Email route
   @Post(AuthEndpoints.VERIFY_EMAIL)
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
     await this.authService.verifyEmail(verifyEmailDto.email, verifyEmailDto.code);
     return new ResponseDto(SuccessMessages.VERIFY_EMAIL_SUCCESSFUL);
@@ -73,7 +75,7 @@ export class AuthController {
 
   // Phone Verification Code route
   @Post(AuthEndpoints.PHONE_VERIFICATION)
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async sendPhoneVerificationCode(@Body() phoneDto: PhoneDto) {
     await this.authService.sendPhoneVerificationCode(phoneDto.phoneNumber);
     return new ResponseDto(SuccessMessages.PHONE_VERIFICATION_CODE_SENT);
@@ -88,7 +90,7 @@ export class AuthController {
 
   // Send Password Reset Code route
   @Post(AuthEndpoints.FORGOT_PASSWORD)
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async sendPasswordResetCode(@Body() emailOrPhoneDto: EmailorPhoneDto) {
     await this.authService.sendPasswordResetCode(emailOrPhoneDto.email, emailOrPhoneDto.phoneNumber);
     return new ResponseDto(SuccessMessages.PASSWORD_RESET_CODE_SENT);
@@ -96,10 +98,27 @@ export class AuthController {
 
   // Reset Password route
   @Post(AuthEndpoints.RESET_PASSWORD)
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     await this.authService.resetPassword(resetPasswordDto);
     return new ResponseDto(SuccessMessages.PASSWORD_RESET_SUCCESSFUL);
+  }
+
+  // Logout route
+  @Post(AuthEndpoints.LOGOUT)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async logout(@Headers('x-device-id') deviceId: string, @Req() req: Request) {
+    await this.authService.logout(deviceId);
+    return new ResponseDto(SuccessMessages.SINGLE_LOGOUT_SUCCESSFUL);
+  }
+
+  // Logout All route
+  @UseGuards(JwtAuthGuard)
+  @Post(AuthEndpoints.LOGOUT_ALL)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async logoutAll(@Req() req: AuthenticatedRequest) {
+    await this.authService.logoutAll(req.authInfo.userId);
+    return new ResponseDto(SuccessMessages.LOGOUT_ALL_SUCCESSFUL);
   }
 
 }

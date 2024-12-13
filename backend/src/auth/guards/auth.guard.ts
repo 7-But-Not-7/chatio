@@ -35,7 +35,7 @@ export class JwtAuthGuard implements CanActivate {
       await this.sessionService.updateSessionExpiration(userId, deviceId);
 
       // Attach user info to the request object
-      request.user = { userId, deviceId };
+      request.authInfo = { userId, deviceId };
       return true;
     } catch (error) {
       throw new UnauthorizedException(ErrorMessages.AUTHGUARD_DEFAULT);

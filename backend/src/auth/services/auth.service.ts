@@ -298,9 +298,9 @@ export class AuthService {
         }
     }
 
-    async logout(userId: string, deviceId: string) {
+    async logout(deviceId: string) {
         try {
-            await this.sessionService.deleteSession(userId, deviceId);
+            await this.sessionService.deleteSessionByDeviceId(deviceId);
             return true;
         } catch (error) {
             if (error instanceof HttpException) {
