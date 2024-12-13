@@ -298,5 +298,27 @@ export class AuthService {
         }
     }
 
-    
+    async logout(userId: string, deviceId: string) {
+        try {
+            await this.sessionService.deleteSession(userId, deviceId);
+            return true;
+        } catch (error) {
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException(ErrorMessages.SINGLE_LOGOUT_FAILED);
+        }
+    }
+
+    async logoutAll(userId: string) {
+        try {
+            await this.sessionService.deleteAllSessions(userId);
+            return true;
+        } catch (error) {
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException(ErrorMessages.LOGOUT_ALL_FAILED);
+        }
+    }
 }
