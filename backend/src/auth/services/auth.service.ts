@@ -1,7 +1,6 @@
-import { BadRequestException, HttpException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { SessionService } from 'src/session/session.service';
-import { UserService } from 'src/user/user.service';
 import { BcryptService } from '../providers/bcrypt.service';
 import { CryptoService } from '../providers/crypto.service';
 import { LoginBodyDto } from '../dtos/login.body.dto';
@@ -15,12 +14,13 @@ import { EmailName } from 'src/common/enums/email-name.enum';
 import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
 import { RandomHelper } from 'src/common/utils/random.helper';
 import { ServiceHelper } from 'src/common/utils/service.helper';
+import { UserProvider } from 'src/user/providers/user.provider';
 
 @Injectable()
 export class AuthService {
     constructor(
         private readonly jwtService: JwtService,
-        private readonly userService: UserService,
+        private readonly userProvider: UserProvider,
         private readonly sessionService: SessionService,
         private readonly bcryptService: BcryptService,
         private readonly cryptoService: CryptoService,
@@ -40,9 +40,9 @@ export class AuthService {
             // Find user by email or phone number
             let user: User;
             if (loginData.email) {
-                user = await this.userService.findByEmail(loginData.email);
+                user = await this.userProvider.findByEmail(loginData.email);
             } else {
-                user = await this.userService.findByPhoneNumber(loginData.phoneNumber);
+                user = await this.userProvider.findByPhoneNumber(loginData.phoneNumber);
             }
             if (!user) {
                 throw new UnauthorizedException(ErrorMessages.INVALID_LOGIN_CREDENTIALS);
@@ -69,17 +69,17 @@ export class AuthService {
     async register(registerData: RegisterBodyDto) {
         try {
             // Check if user with email, username or phone number already exists
-            const userWithEmail = await this.userService.findByEmail(registerData.email);
+            const userWithEmail = await this.userProvider.findByEmail(registerData.email);
             if (userWithEmail) {
                 throw new BadRequestException(ErrorMessages.EMAIL_ALREADY_EXISTS);
             }
 
-            const userWithPhoneNumber = await this.userService.findByPhoneNumber(registerData.phoneNumber);
+            const userWithPhoneNumber = await this.userProvider.findByPhoneNumber(registerData.phoneNumber);
             if (userWithPhoneNumber) {
                 throw new BadRequestException(ErrorMessages.PHONE_NUMBER_ALREADY_EXISTS);
             }
 
-            const userWithUsername = await this.userService.findByUsername(registerData.username);
+            const userWithUsername = await this.userProvider.findByUsername(registerData.username);
             if (userWithUsername) {
                 throw new BadRequestException(ErrorMessages.USERNAME_ALREADY_EXISTS);
             }
@@ -88,8 +88,10 @@ export class AuthService {
             const hashedPassword = await this.bcryptService.hashPassword(registerData.password);
             registerData.password = hashedPassword;
 
+            registerData.username = registerData.username.toLowerCase();
+
             // Create user
-            await this.userService.create(registerData);
+            await this.userProvider.create(registerData);
             return true;
         } catch (error) {
             ServiceHelper.handleServiceError(error, ErrorMessages.REGISTER_FAILED);
@@ -120,7 +122,7 @@ export class AuthService {
             }
 
             // Get user by id
-            const user = await this.userService.findById(payload.userId);
+            const user = await this.userProvider.findById(payload.userId);
             if (!user) {
                 throw new UnauthorizedException(ErrorMessages.INVALID_REFRESH_TOKEN);
             }
@@ -136,7 +138,7 @@ export class AuthService {
     async sendEmailVerificationCode(email: string) {
         try {
             // Find user by email
-            const user = await this.userService.findByEmail(email);
+            const user = await this.userProvider.findByEmail(email);
             if (!user) {
                 throw new BadRequestException(ErrorMessages.EMAIL_NOT_FOUND);
             }
@@ -167,7 +169,7 @@ export class AuthService {
             }
 
             // Update user email verification status
-            await this.userService.updateEmailVerificationStatus(email);
+            await this.userProvider.updateEmailVerificationStatus(email);
             return true;
         } catch (error) {
             ServiceHelper.handleServiceError(error, ErrorMessages.ERROR_VERIFYING_EMAIL);
@@ -177,7 +179,7 @@ export class AuthService {
     async sendPhoneVerificationCode(phoneNumber: string) {
         try {
             // Find user by phone number
-            const user = await this.userService.findByPhoneNumber(phoneNumber);
+            const user = await this.userProvider.findByPhoneNumber(phoneNumber);
             if (!user) {
                 throw new BadRequestException(ErrorMessages.PHONE_NUMBER_NOT_FOUND);
             }
@@ -203,7 +205,7 @@ export class AuthService {
             }
 
             // Update user phone verification status
-            await this.userService.updatePhoneNumberVerificationStatus(phoneNumber);
+            await this.userProvider.updatePhoneNumberVerificationStatus(phoneNumber);
             return true;
         } catch (error) {
             ServiceHelper.handleServiceError(error, ErrorMessages.ERROR_VERIFYING_PHONE_NUMBER);
@@ -215,9 +217,9 @@ export class AuthService {
             // Find user by email or phone number
             let user: User;
             if (email) {
-                user = await this.userService.findByEmail(email);
+                user = await this.userProvider.findByEmail(email);
             } else {
-                user = await this.userService.findByPhoneNumber(phoneNumber);
+                user = await this.userProvider.findByPhoneNumber(phoneNumber);
             }
             if (!user) {
                 throw new BadRequestException(ErrorMessages.EMAIL_NOT_FOUND);
@@ -260,9 +262,9 @@ export class AuthService {
             // Hash Password
             const hashedPassword = await this.bcryptService.hashPassword(password);
             if (email) {
-                await this.userService.updatePasswordByEmail(email, hashedPassword);
+                await this.userProvider.updatePasswordByEmail(email, hashedPassword);
             } else {
-                await this.userService.updatePasswordByPhoneNumber(phoneNumber, hashedPassword);
+                await this.userProvider.updatePasswordByPhoneNumber(phoneNumber, hashedPassword);
             }
             return true;
         } catch (error) {

@@ -15,3 +15,7 @@ export enum AuthEndpoints{
     GOOGLE_REDIRECT='google/redirect',
     GOOGLE_AUTH_CALLBACK='google/callback',
 }
+
+export enum UserEndpoints{
+    CHECK_USERNAME = 'check-username'
+}
