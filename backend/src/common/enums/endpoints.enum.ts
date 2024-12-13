@@ -10,6 +10,7 @@ export enum AuthEndpoints{
     FORGOT_PASSWORD='forgot-password',
     LOGOUT='logout',
     LOGOUT_ALL='logout-all',
+    VERIFY_SESSION='verify-session',
     GOOGLE_AUTH='google',
     GOOGLE_REDIRECT='google/redirect',
     GOOGLE_AUTH_CALLBACK='google/callback',

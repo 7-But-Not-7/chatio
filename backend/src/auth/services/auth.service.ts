@@ -14,6 +14,7 @@ import { SmsService } from 'src/sms/sms.service';
 import { EmailName } from 'src/common/enums/email-name.enum';
 import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
 import { RandomHelper } from 'src/common/utils/random.helper';
+import { ServiceHelper } from 'src/common/utils/service.helper';
 
 @Injectable()
 export class AuthService {
@@ -60,10 +61,7 @@ export class AuthService {
             await this.sessionService.createSession(user.id, deviceId, { userId: user.id, deviceId, refreshToken: _refreshToken, device: loginData.device });
             return { accessToken, refreshToken };
         } catch (error) {
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException(ErrorMessages.LOGIN_FAILED);
+           ServiceHelper.handleServiceError(error, ErrorMessages.LOGIN_FAILED);
         }
     }
 
@@ -94,10 +92,7 @@ export class AuthService {
             await this.userService.create(registerData);
             return true;
         } catch (error) {
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException(ErrorMessages.REGISTER_FAILED);
+            ServiceHelper.handleServiceError(error, ErrorMessages.REGISTER_FAILED);
         }
     }
 
@@ -134,11 +129,7 @@ export class AuthService {
             const accessToken = this.jwtService.sign({ userId: user.id, deviceId }, { expiresIn: AuthEnum.ACCESS_TOKEN_EXPIRATION });
             return { accessToken };
         } catch (error) {
-            console.log(error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException(ErrorMessages.INVALID_REFRESH_TOKEN);
+            ServiceHelper.handleServiceError(error, ErrorMessages.INVALID_REFRESH_TOKEN);
         }
     }
 
@@ -155,7 +146,7 @@ export class AuthService {
             await this.sessionService.setVerificationCode(`email-verification:${email}`, code);
 
             // Send email verification code
-            await this.emailService.sendEmail({
+            this.emailService.sendEmail({
                 to: email,
                 subject: 'Email Verification Code',
                 template: EmailName.VERIFY_EMAIL,
@@ -163,10 +154,7 @@ export class AuthService {
             });
             return true;
         } catch (error) {
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException(ErrorMessages.SEND_EMAIL_VERIFICATION_CODE_FAILED);
+            ServiceHelper.handleServiceError(error, ErrorMessages.SEND_EMAIL_VERIFICATION_CODE_FAILED);
         }
     }
 
@@ -182,10 +170,7 @@ export class AuthService {
             await this.userService.updateEmailVerificationStatus(email);
             return true;
         } catch (error) {
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException(ErrorMessages.ERROR_VERIFYING_EMAIL);
+            ServiceHelper.handleServiceError(error, ErrorMessages.ERROR_VERIFYING_EMAIL);
         }
     }
 
@@ -202,13 +187,10 @@ export class AuthService {
             await this.sessionService.setVerificationCode(`phone-verification:${phoneNumber}`, code);
 
             // Send phone verification code
-            await this.smsService.sendSms(phoneNumber, `Your phone verification code is ${code}`);
+            this.smsService.sendSms(phoneNumber, `Your phone verification code is ${code}`);
             return true;
         } catch (error) {
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException(ErrorMessages.SEND_PHONE_VERIFICATION_CODE_FAILED);
+            ServiceHelper.handleServiceError(error, ErrorMessages.SEND_PHONE_VERIFICATION_CODE_FAILED);
         }
     }
 
@@ -224,10 +206,7 @@ export class AuthService {
             await this.userService.updatePhoneNumberVerificationStatus(phoneNumber);
             return true;
         } catch (error) {
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException(ErrorMessages.ERROR_VERIFYING_PHONE_NUMBER);
+            ServiceHelper.handleServiceError(error, ErrorMessages.ERROR_VERIFYING_PHONE_NUMBER);
         }
     }
 
@@ -250,22 +229,18 @@ export class AuthService {
 
             // Send password reset code
             if (email) {
-                await this.emailService.sendEmail({
+                this.emailService.sendEmail({
                     to: email,
                     subject: 'Password Reset Code',
                     template: EmailName.PASSWORD_RESET,
                     data: { code }
                 });
             } else {
-                await this.smsService.sendSms(phoneNumber, `Your password reset code is ${code}`);
+                this.smsService.sendSms(phoneNumber, `Your password reset code is ${code}`);
             }
             return true;
         } catch (error) {
-            console.log(error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException(ErrorMessages.ERROR_SENDING_PASSWORD_RESET_CODE);
+            ServiceHelper.handleServiceError(error, ErrorMessages.ERROR_SENDING_PASSWORD_RESET_CODE);
         }
     }
 
@@ -291,11 +266,29 @@ export class AuthService {
             }
             return true;
         } catch (error) {
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException(ErrorMessages.ERROR_RESETTING_PASSWORD);
+            ServiceHelper.handleServiceError(error, ErrorMessages.ERROR_RESETTING_PASSWORD);
         }
     }
 
+    async logout(deviceId: string) {
+        try {
+            await this.sessionService.deleteSessionByDeviceId(deviceId);
+            return true;
+        } catch (error) {
+            ServiceHelper.handleServiceError(error, ErrorMessages.SINGLE_LOGOUT_FAILED);
+        }
+    }
+
+    async logoutAll(userId: string) {
+        try {
+            await this.sessionService.deleteAllSessions(userId);
+            return true;
+        } catch (error) {
+            ServiceHelper.handleServiceError(error, ErrorMessages.LOGOUT_ALL_FAILED);
+        }
+    }
+
+    verifySession(userId: string, deviceId: string) {
+        return { userId, deviceId };
+    }
 }

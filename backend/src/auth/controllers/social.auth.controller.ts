@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { SocialAuthService } from '../services/social.auth.service';
 import { DeviceDto } from '../dtos/device.data.dto';
 import { AuthEndpoints } from 'src/common/enums/endpoints.enum';
-import { GoogleProfile } from '..';
+import { GoogleProfile } from '../../common/types/auth';
 import { ParseAndValidate } from 'src/common/pipes/parse-validate.pipe';
 
 @Controller('auth')

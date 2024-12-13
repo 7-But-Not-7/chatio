@@ -29,3 +29,7 @@ export interface GoogleProfile {
     profilePicture: string;
     gender: string | null;
 }
+
+export interface AuthenticatedRequest extends Request {
+    authInfo: AccessTokenPayload;
+}

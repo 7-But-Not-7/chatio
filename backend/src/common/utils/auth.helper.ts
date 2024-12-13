@@ -1,4 +1,4 @@
-import { GoogleProfile, GoogleRawProfile } from "src/auth";
+import { GoogleProfile, GoogleRawProfile } from "src/common/types/auth";
 
 export class AuthHelper {
 

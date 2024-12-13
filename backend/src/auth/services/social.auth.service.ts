@@ -5,7 +5,7 @@ import { UserService } from 'src/user/user.service';
 import { CryptoService } from '../providers/crypto.service';
 import { DeviceDto } from '../dtos/device.data.dto';
 import { ErrorMessages } from 'src/common/enums/error-messages.enum';
-import { GoogleProfile } from '..';
+import { GoogleProfile } from '../../common/types/auth';
 import { User } from 'src/user/entities/user.entity';
 import { RandomHelper } from 'src/common/utils/random.helper';
 import { AuthEnum } from 'src/common/enums/auth.enum';

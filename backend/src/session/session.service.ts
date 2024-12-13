@@ -33,9 +33,11 @@ export class SessionService {
     return data ? JSON.parse(data) : null;
   }
 
-  async deleteSession(userId: string, deviceId: string) {
-    const key = this.generateKey(userId, deviceId);
-    await this.redisSession.del(key);
+  async deleteSessionByDeviceId(deviceId: string) {
+    const keys = await this.redisSession.keys(`session:*:${deviceId}`);
+    keys.forEach(async (key) => {
+      await this.redisSession.del(key);
+    });
   }
 
   async deleteAllSessions(userId: string) {
