@@ -3,6 +3,7 @@ import { CacheService } from './cache.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CacheStore, CacheModule as NestCacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-store';
+import { CacheEnum } from 'src/common/enums/cache.enum';
 
 @Global()
 @Module({
@@ -14,13 +15,13 @@ import { redisStore } from 'cache-manager-redis-store';
         store: await redisStore({
           url: configService.get('redis.cacheUrl')
         }) as unknown as CacheStore,
-        ttl: 60 * 60, // 1 hour
+        ttl: CacheEnum.DEFAULT_CACHE_EXPIRATION,
       }),
 
       inject: [ConfigService],
     })
   ],
   providers: [CacheService],
-  exports: [CacheService]
+  exports: [CacheService, NestCacheModule]
 })
 export class CacheModule {}
