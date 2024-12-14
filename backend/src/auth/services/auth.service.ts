@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { SessionService } from 'src/session/session.service';
 import { BcryptService } from '../providers/bcrypt.service';
 import { CryptoService } from '../providers/crypto.service';
 import { LoginBodyDto } from '../dtos/login.body.dto';
@@ -15,6 +14,7 @@ import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
 import { RandomHelper } from 'src/common/utils/random.helper';
 import { ServiceHelper } from 'src/common/utils/service.helper';
 import { UserProvider } from 'src/user/providers/user.provider';
+import { SessionService } from 'src/session/session.service';
 
 @Injectable()
 export class AuthService {
