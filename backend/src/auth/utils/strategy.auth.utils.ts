@@ -1,6 +1,6 @@
 import { GoogleProfile, GoogleRawProfile } from "src/common/types/auth";
 
-export class AuthHelper {
+export class StrategyAuthHelper {
 
   static getGoogleProfile(profile: GoogleRawProfile): GoogleProfile {
     return {
