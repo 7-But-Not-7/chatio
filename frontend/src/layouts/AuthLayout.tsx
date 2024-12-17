@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 const AuthLayout: React.FC = () => {
   return (
     <div>
-        <h1 className="bg-black text-white">Auth Layout</h1>
+        <h1 className="">Auth Layout</h1>
       <main>
         <Outlet />
       </main>

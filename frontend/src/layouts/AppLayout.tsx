@@ -2,12 +2,12 @@ import React from "react";
 
 const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div>
+    <div className="h-[100dvh] bg-gradient-to-b from-[#C32BC6] to-[#2F6EB5]">
       <header>
         <h1>App Layout</h1>
       </header>
       <main>
-        <div className="bg-slate-400 w-full h-[800px] text-blue-950">
+        <div className="">
           {children}
         </div>
       </main>
