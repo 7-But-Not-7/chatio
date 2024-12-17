@@ -6,7 +6,19 @@ import { Verify } from "./Verify";
 export const SignUp: React.FC = () => {
   const {currentStep, next, prev, reset} = useSignUpStep();
   return (
-  <div className="flex w-full relative">
+  <div className="flex w-full relative items-center justify-center border-black border h-full">
+
+
+
+
+
+
+
+
+
+
+
+
     {currentStep === "register" && <Register />}
     {currentStep === "email-phone" && <Verify />}
     {currentStep === "success" && <Success />}
