@@ -13,10 +13,12 @@ import { SocialAuthController } from './controllers/social.auth.controller';
 import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtAuthGuard } from './guards/jwt.auth.guard';
 import { SocialAuthService } from './services/social.auth.service';
+import { AuthGaurdBase } from './guards';
+import { WsAuthGuard } from './guards/ws.auth.guard';
 
 @Module({
   controllers: [AuthController, SocialAuthController],
-  providers: [AuthService, BcryptService, CryptoService, JwtAuthGuard, GoogleStrategy, SocialAuthService],
+  providers: [AuthService, BcryptService, CryptoService, JwtAuthGuard, AuthGaurdBase, GoogleStrategy, SocialAuthService, WsAuthGuard],
   imports: [
     UserModule,
     SessionModule,
@@ -31,6 +33,6 @@ import { SocialAuthService } from './services/social.auth.service';
       }),
     }),
   ],
-  exports: [JwtAuthGuard]
+  exports: [JwtAuthGuard, WsAuthGuard, AuthGaurdBase],
 })
 export class AuthModule { }
