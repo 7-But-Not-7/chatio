@@ -1,5 +1,5 @@
 import { Message } from "src/chat/entities/message.entity";
-import { Column, Entity, Index, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, Index, ManyToMany, OneToMany, OneToOne } from "typeorm";
 import { Settings } from "./setting.entity";
 import { BaseEntity } from "src/common/entities/base";
 import { ChatRoom } from "src/chat/entities/chat-room.entity";
@@ -64,4 +64,10 @@ export class User extends BaseEntity {
 
     @OneToMany(() => ChatInvitation, (chatInvitation) => chatInvitation.sender)
     invitationsSent: ChatInvitation[];
+
+    @ManyToMany(() => User, user => user.blocked)
+    blockedBy: User[];
+
+    @ManyToMany(() => User, user => user.blockedBy)
+    blocked: User[];
 }
