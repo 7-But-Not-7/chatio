@@ -13,6 +13,9 @@ export class ChatMember extends BaseEntity{
     @Column({default: false})
     isMuted: boolean;
 
+    @Column({default: false})
+    isBanned: boolean;
+
     @ManyToOne(() => User, (user) => user.chatMembers)
     user: User;
 
