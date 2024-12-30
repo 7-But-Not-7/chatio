@@ -1,14 +1,13 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user.entity";
 import { BaseEntity } from "src/common/entities/base.entity";
+import { Themes, VideoType } from "src/common/enums/db.enum";
 
-export type Theme = "light" | "dark";
-export type VideoType = "professional" | "casual";
 
 @Entity()
 export class Settings extends BaseEntity{
-    @Column({default: "light"})
-    theme: Theme;
+    @Column({default: Themes.LIGHT})
+    theme: Themes;
 
     @Column({default: true})
     receiveEmails: boolean;
@@ -16,7 +15,7 @@ export class Settings extends BaseEntity{
     @Column({default: true})
     receiveNotifications: boolean;
 
-    @Column({default: "casual"})
+    @Column({default: VideoType.CASUAL})
     videoType: VideoType;
 
     @OneToOne(() => User, (user) => user.settings)
