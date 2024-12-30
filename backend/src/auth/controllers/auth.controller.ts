@@ -13,7 +13,7 @@ import { VerifyPhoneDto } from '../dtos/verify-phone.body.dto';
 import { EmailorPhoneDto } from '../dtos/email-phone.opt.dto';
 import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
 import { AuthEndpoints } from 'src/common/enums/endpoints.enum';
-import { JwtAuthGuard } from '../guards/auth.guard';
+import { JwtAuthGuard } from '../guards/jwt.auth.guard';
 import { AuthenticatedRequest } from '../../common/types/auth';
 
 @Controller('auth')

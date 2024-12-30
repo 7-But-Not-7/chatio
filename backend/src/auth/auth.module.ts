@@ -11,7 +11,7 @@ import { SmsModule } from 'src/sms/sms.module';
 import { EmailModule } from 'src/email/email.module';
 import { SocialAuthController } from './controllers/social.auth.controller';
 import { GoogleStrategy } from './strategies/google.strategy';
-import { JwtAuthGuard } from './guards/auth.guard';
+import { JwtAuthGuard } from './guards/jwt.auth.guard';
 import { SocialAuthService } from './services/social.auth.service';
 
 @Module({
@@ -31,5 +31,6 @@ import { SocialAuthService } from './services/social.auth.service';
       }),
     }),
   ],
+  exports: [JwtAuthGuard]
 })
 export class AuthModule { }
