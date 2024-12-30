@@ -4,6 +4,7 @@ import { Settings } from "./setting.entity";
 import { BaseEntity } from "src/common/entities/base.entity";
 import { ChatRoom } from "src/chat/entities/chat-room.entity";
 import { ChatMember } from "src/chat/entities/chat-member.entity";
+import { Notification } from "src/notifications/entities/notification.entity";
 
 @Entity()
 export class User extends BaseEntity {
@@ -50,4 +51,7 @@ export class User extends BaseEntity {
 
     @OneToMany(() => ChatMember, (chatMember) => chatMember.user)
     chatMembers: ChatMember[];
+
+    @OneToMany(() => Notification, (notification) => notification.user)
+    notifications: Notification[];
 }
