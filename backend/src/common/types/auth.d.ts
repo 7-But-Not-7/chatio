@@ -1,3 +1,6 @@
+import { Socket } from 'socket.io';
+import { Request } from 'express';
+
 export interface AccessTokenPayload{
     userId: string;
     deviceId: string;
@@ -31,5 +34,9 @@ export interface GoogleProfile {
 }
 
 export interface AuthenticatedRequest extends Request {
+    authInfo: AccessTokenPayload;
+}
+
+export interface AuthenticatedWsClient extends Socket {
     authInfo: AccessTokenPayload;
 }

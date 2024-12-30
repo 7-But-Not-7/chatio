@@ -4,6 +4,7 @@ import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { Message } from "./message.entity";
 import { Call } from "src/call/entities/call.entity";
 import { ChatMember } from "./chat-member.entity";
+import { ChatInvitation } from "./chat-invitation.entity";
 
 
 @Entity()
@@ -17,6 +18,9 @@ export class ChatRoom extends BaseEntity {
     @Column({ nullable: true, default: false })
     isGroup: boolean;
 
+    @Column({default: false})
+    isDeleted: boolean;
+
     @OneToMany(() => ChatMember, (chatMember) => chatMember.chatRoom)
     members: ChatMember[];
 
@@ -28,4 +32,7 @@ export class ChatRoom extends BaseEntity {
 
     @OneToMany(() => Message, (message) => message.chatRoom)
     messages: Message[];
+
+    @OneToMany(() => ChatInvitation, (chatInvitation) => chatInvitation.chatRoom)
+    invitations: ChatInvitation[];
 }
