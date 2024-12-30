@@ -1,7 +1,7 @@
 import { ChatMember } from "src/chat/entities/chat-member.entity";
 import { ChatRoom } from "src/chat/entities/chat-room.entity";
 import { BaseEntity } from "src/common/entities/base";
-import { CallType } from "src/common/enums/db.enum";
+import { CallStatus, CallType } from "src/common/enums/db.enum";
 import { Column, Entity, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { CallParticipant } from "./call-participant.entity";
 
@@ -11,6 +11,9 @@ export class Call extends BaseEntity {
 
     @Column()
     type: CallType;
+
+    @Column()
+    status: CallStatus;
 
     @Column()
     startedAt: Date;

@@ -25,3 +25,15 @@ export enum CallType {
     VIDEO = "video",
     AUDIO = "audio",
 }
+
+export enum CallStatus {
+    INITIATED = "initiated",
+    ONGOING = "ongoing",
+    ENDED = "ended",
+}
+
+export enum ChatInvitationStatus {
+    PENDING = "pending",
+    ACCEPTED = "accepted",
+    REJECTED = "rejected",
+}
