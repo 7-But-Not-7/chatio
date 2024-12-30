@@ -15,10 +15,11 @@ import { JwtAuthGuard } from './guards/jwt.auth.guard';
 import { SocialAuthService } from './services/social.auth.service';
 import { AuthGaurdBase } from './guards';
 import { WsAuthGuard } from './guards/ws.auth.guard';
+import { WsAuthMiddleware } from './guards/ws.middleware';
 
 @Module({
   controllers: [AuthController, SocialAuthController],
-  providers: [AuthService, BcryptService, CryptoService, JwtAuthGuard, AuthGaurdBase, GoogleStrategy, SocialAuthService, WsAuthGuard],
+  providers: [AuthService, BcryptService, CryptoService, JwtAuthGuard, AuthGaurdBase, GoogleStrategy, SocialAuthService, WsAuthGuard, WsAuthMiddleware],
   imports: [
     UserModule,
     SessionModule,
@@ -33,6 +34,6 @@ import { WsAuthGuard } from './guards/ws.auth.guard';
       }),
     }),
   ],
-  exports: [JwtAuthGuard, WsAuthGuard, AuthGaurdBase],
+  exports: [JwtAuthGuard, WsAuthGuard, WsAuthMiddleware, AuthGaurdBase],
 })
 export class AuthModule { }

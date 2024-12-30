@@ -25,7 +25,6 @@ export class AuthGaurdBase{
         if (!session || !isSessionValid) {
           throw new UnauthorizedException(ErrorMessages.INVALID_SESSION);
         }
-    
         //Extend user session
         await this.sessionService.updateSessionExpiration(userId, deviceId);
     
