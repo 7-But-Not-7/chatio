@@ -24,7 +24,7 @@ export class Call extends BaseEntity{
     @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.calls)
     chatRoom: ChatRoom;
 
-    @ManyToOne(() => ChatMember, (chatMember) => chatMember.calls)
+    @ManyToOne(() => ChatMember, (chatMember) => chatMember.callsInitiated)
     caller: ChatMember;
 
     @OneToMany(() => CallParticipant, (callParticipant) => callParticipant.call)

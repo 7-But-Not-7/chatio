@@ -5,6 +5,7 @@ import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { Message } from "./message.entity";
 import { ChatRoom } from "./chat-room.entity";
 import { Call } from "src/call/entities/call.entity";
+import { CallParticipant } from "src/call/entities/call-participant.entity";
 
 
 @Entity()
@@ -31,5 +32,8 @@ export class ChatMember extends BaseEntity{
     chatRoom: ChatRoom;
 
     @OneToMany(() => Call, (call) => call.caller)
-    calls: Call[];
+    callsInitiated: Call[];
+
+    @OneToMany(() => CallParticipant, (callParticipant) => callParticipant.chatMember)
+    calls: CallParticipant[];
 }
