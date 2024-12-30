@@ -1,4 +1,4 @@
-import { BaseEntity } from "src/common/entities/base.entity";
+import { BaseEntity } from "src/common/entities/base";
 import { NotificationType } from "src/common/enums/notification.enum";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, ManyToOne } from "typeorm";

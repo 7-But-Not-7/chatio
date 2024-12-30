@@ -1,4 +1,4 @@
-import { BaseEntity } from "src/common/entities/base.entity";
+import { BaseEntity } from "src/common/entities/base";
 import { ChatMemberRole } from "src/common/enums/db.enum";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
@@ -9,17 +9,17 @@ import { CallParticipant } from "src/call/entities/call-participant.entity";
 
 
 @Entity()
-export class ChatMember extends BaseEntity{
-    @Column({default: ChatMemberRole.MEMBER})
+export class ChatMember extends BaseEntity {
+    @Column({ default: ChatMemberRole.MEMBER })
     role: ChatMemberRole;
 
-    @Column({default: false})
+    @Column({ default: false })
     isMuted: boolean;
 
-    @Column({default: false})
+    @Column({ default: false })
     isBanned: boolean;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     deletedAt: Date;
 
     @ManyToOne(() => User, (user) => user.chatMembers)

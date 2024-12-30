@@ -1,7 +1,7 @@
 import { Message } from "src/chat/entities/message.entity";
 import { Column, Entity, Index, OneToMany, OneToOne } from "typeorm";
 import { Settings } from "./setting.entity";
-import { BaseEntity } from "src/common/entities/base.entity";
+import { BaseEntity } from "src/common/entities/base";
 import { ChatRoom } from "src/chat/entities/chat-room.entity";
 import { ChatMember } from "src/chat/entities/chat-member.entity";
 import { Notification } from "src/notifications/entities/notification.entity";

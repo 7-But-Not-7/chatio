@@ -1,12 +1,12 @@
 import { User } from 'src/user/entities/user.entity';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
 import { ChatRoom } from './chat-room.entity';
-import { BaseEntity } from 'src/common/entities/base.entity';
+import { BaseEntity } from 'src/common/entities/base';
 import { ChatMember } from './chat-member.entity';
 import { File } from './file.entity';
 
 @Entity()
-export class Message extends BaseEntity{
+export class Message extends BaseEntity {
   @Column()
   content: string;
 

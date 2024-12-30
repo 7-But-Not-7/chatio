@@ -1,11 +1,11 @@
-import { BaseEntity } from "src/common/entities/base.entity";
+import { BaseEntity } from "src/common/entities/base";
 import { FileType } from "src/common/enums/db.enum";
 import { Column, Entity, ManyToOne } from "typeorm";
 import { Message } from "./message.entity";
 
 
 @Entity()
-export class File extends BaseEntity{
+export class File extends BaseEntity {
     @Column()
     name: string;
 

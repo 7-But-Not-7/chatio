@@ -1,4 +1,4 @@
-import { BaseEntity } from "src/common/entities/base.entity";
+import { BaseEntity } from "src/common/entities/base";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { Message } from "./message.entity";
@@ -7,14 +7,14 @@ import { ChatMember } from "./chat-member.entity";
 
 
 @Entity()
-export class ChatRoom extends BaseEntity{
-    @Column({nullable: true})
+export class ChatRoom extends BaseEntity {
+    @Column({ nullable: true })
     name?: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     description?: string;
 
-    @Column({nullable: true, default: false})
+    @Column({ nullable: true, default: false })
     isGroup: boolean;
 
     @OneToMany(() => ChatMember, (chatMember) => chatMember.chatRoom)

@@ -1,13 +1,13 @@
 import { ChatMember } from "src/chat/entities/chat-member.entity";
 import { ChatRoom } from "src/chat/entities/chat-room.entity";
-import { BaseEntity } from "src/common/entities/base.entity";
+import { BaseEntity } from "src/common/entities/base";
 import { CallType } from "src/common/enums/db.enum";
 import { Column, Entity, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { CallParticipant } from "./call-participant.entity";
 
 
 @Entity()
-export class Call extends BaseEntity{
+export class Call extends BaseEntity {
 
     @Column()
     type: CallType;
@@ -18,7 +18,7 @@ export class Call extends BaseEntity{
     @Column()
     endedAt: Date;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     recordingUrl?: string;
 
     @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.calls)

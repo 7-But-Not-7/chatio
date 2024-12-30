@@ -1,5 +1,5 @@
 import { IntersectionType } from "@nestjs/mapped-types";
-import { IsDefined, IsEmail, IsNotEmpty, IsOptional, IsPhoneNumber, IsString, IsStrongPassword } from "class-validator";
+import { IsDefined, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { EmailDto } from "./email.body.dto";
 import { PhoneDto } from "./phone.body.dto";
 import { PasswordDto } from "./password.dto";
