@@ -10,7 +10,6 @@ export class WsAuthGuard implements CanActivate {
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const client: Socket = context.switchToWs().getClient();
         const token = client.handshake.auth.token || client.handshake.headers.authorization;
-
         try {
             const authInfo = await this.authGaurdBase.validateToken(token);
             (client as any).authInfo = authInfo;

@@ -2,6 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import {Socket, Server} from 'socket.io';
 import { WsAuthGuard } from 'src/auth/guards/ws.auth.guard';
+import { AuthenticatedWsClient } from 'src/common/types/auth';
 
 @UseGuards(WsAuthGuard)
 @WebSocketGateway({namespace: 'chat'})
@@ -21,8 +22,8 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
   @SubscribeMessage('message')
-  handleMessage(client: Socket, payload: any) {
-    console.log('Message received', payload);
+  handleMessage(client: AuthenticatedWsClient, payload: any) {
+    console.log('Message received', payload, client.authInfo);
     client.broadcast.emit('message', payload);
   }
 }
