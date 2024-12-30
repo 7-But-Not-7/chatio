@@ -7,7 +7,7 @@ import { ErrorMessages } from 'src/common/enums/error-messages.enum';
 import { GoogleProfile } from '../../common/types/auth';
 import { User } from 'src/user/entities/user.entity';
 import { RandomHelper } from 'src/common/utils/random.helper';
-import { AuthEnum } from 'src/common/enums/auth.enum';
+import { ExpirationEnum } from 'src/common/enums/expiration.default.enum';
 import { UserProvider } from 'src/user/providers/user.provider';
 
 
@@ -71,9 +71,9 @@ export class SocialAuthService {
     }
 
     // Get access and refresh tokens
-    const accessToken = this.jwtService.sign({ userId: user.id, deviceId }, { expiresIn: AuthEnum.ACCESS_TOKEN_EXPIRATION });
+    const accessToken = this.jwtService.sign({ userId: user.id, deviceId }, { expiresIn: ExpirationEnum.ACCESS_TOKEN_EXPIRATION });
     const _refreshToken = this.cryptoService.random();
-    const jwtrefreshToken = this.jwtService.sign({ userId: user.id, deviceId, refreshToken: _refreshToken }, { expiresIn: AuthEnum.REFRESH_TOKEN_EXPIRATION });
+    const jwtrefreshToken = this.jwtService.sign({ userId: user.id, deviceId, refreshToken: _refreshToken }, { expiresIn: ExpirationEnum.REFRESH_TOKEN_EXPIRATION });
     const refreshToken = this.cryptoService.encrypt(jwtrefreshToken);
     await this.sessionService.createSession(user.id, deviceId, { userId: user.id, deviceId, refreshToken: _refreshToken, device });
     return { accessToken, refreshToken };

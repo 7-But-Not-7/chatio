@@ -6,7 +6,7 @@ import { LoginBodyDto } from '../dtos/login.body.dto';
 import { User } from 'src/user/entities/user.entity';
 import { ErrorMessages } from 'src/common/enums/error-messages.enum';
 import { RegisterBodyDto } from '../dtos/register.body.dto';
-import { AuthEnum } from 'src/common/enums/auth.enum';
+import { ExpirationEnum } from 'src/common/enums/expiration.default.enum';
 import { EmailService } from 'src/email/email.service';
 import { SmsService } from 'src/sms/sms.service';
 import { EmailName } from 'src/common/enums/email-name.enum';
@@ -54,14 +54,14 @@ export class AuthService {
             }
 
             // Get access and refresh tokens
-            const accessToken = this.jwtService.sign({ userId: user.id, deviceId }, { expiresIn: AuthEnum.ACCESS_TOKEN_EXPIRATION });
+            const accessToken = this.jwtService.sign({ userId: user.id, deviceId }, { expiresIn: ExpirationEnum.ACCESS_TOKEN_EXPIRATION });
             const _refreshToken = this.cryptoService.random();
-            const jwtrefreshToken = this.jwtService.sign({ userId: user.id, deviceId, refreshToken: _refreshToken }, { expiresIn: AuthEnum.REFRESH_TOKEN_EXPIRATION });
+            const jwtrefreshToken = this.jwtService.sign({ userId: user.id, deviceId, refreshToken: _refreshToken }, { expiresIn: ExpirationEnum.REFRESH_TOKEN_EXPIRATION });
             const refreshToken = this.cryptoService.encrypt(jwtrefreshToken);
             await this.sessionService.createSession(user.id, deviceId, { userId: user.id, deviceId, refreshToken: _refreshToken, device: loginData.device });
             return { accessToken, refreshToken };
         } catch (error) {
-           ServiceHelper.handleServiceError(error, ErrorMessages.LOGIN_FAILED);
+            ServiceHelper.handleServiceError(error, ErrorMessages.LOGIN_FAILED);
         }
     }
 
@@ -111,7 +111,7 @@ export class AuthService {
                 throw new UnauthorizedException(ErrorMessages.INVALID_REFRESH_TOKEN);
             }
 
-            if(!deviceId){
+            if (!deviceId) {
                 throw new UnauthorizedException(ErrorMessages.NO_DEVICE_ID);
             }
 
@@ -128,7 +128,7 @@ export class AuthService {
             }
 
             // Get access token
-            const accessToken = this.jwtService.sign({ userId: user.id, deviceId }, { expiresIn: AuthEnum.ACCESS_TOKEN_EXPIRATION });
+            const accessToken = this.jwtService.sign({ userId: user.id, deviceId }, { expiresIn: ExpirationEnum.ACCESS_TOKEN_EXPIRATION });
             return { accessToken };
         } catch (error) {
             ServiceHelper.handleServiceError(error, ErrorMessages.INVALID_REFRESH_TOKEN);

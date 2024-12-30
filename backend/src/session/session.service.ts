@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RedisClientType } from 'redis';
 import { DeviceDto } from 'src/auth/dtos/device.data.dto';
-import { AuthEnum } from 'src/common/enums/auth.enum';
+import { ExpirationEnum } from 'src/common/enums/expiration.default.enum';
 import { SessionData } from '.';
 
 @Injectable()
@@ -16,13 +16,13 @@ export class SessionService {
     return `device:${deviceId}`;
   }
 
-  async createSession(userId: string, deviceId: string, value: SessionData, ttl: number = AuthEnum.SESSION_DEFAULT_EXPIRATION) {
+  async createSession(userId: string, deviceId: string, value: SessionData, ttl: number = ExpirationEnum.SESSION_DEFAULT_EXPIRATION) {
     const key = this.generateKey(userId, deviceId);
     await this.redisSession.set(key, JSON.stringify(value), { EX: ttl });
   }
 
   // Set new expiration time for the session
-  async updateSessionExpiration(userId: string, deviceId: string, ttl: number = AuthEnum.SESSION_DEFAULT_EXPIRATION) {
+  async updateSessionExpiration(userId: string, deviceId: string, ttl: number = ExpirationEnum.SESSION_DEFAULT_EXPIRATION) {
     const key = this.generateKey(userId, deviceId);
     await this.redisSession.expire(key, ttl);
   }
@@ -48,7 +48,7 @@ export class SessionService {
   }
 
   // Verifications
-  async setVerificationCode(key: string, code: string, ttl: number = AuthEnum.VERIFICATION_CODE_DEFAULT_EXPIRATION) {
+  async setVerificationCode(key: string, code: string, ttl: number = ExpirationEnum.VERIFICATION_CODE_DEFAULT_EXPIRATION) {
     await this.redisSession.set(key, code, { EX: ttl });
   }
 
@@ -63,7 +63,7 @@ export class SessionService {
   }
 
   // Will store device details in Redis using device id as key
-  async saveDeviceInfo(deviceInfo: DeviceDto, ttl: number = AuthEnum.DEVICE_EXPIRATION) {
+  async saveDeviceInfo(deviceInfo: DeviceDto, ttl: number = ExpirationEnum.DEVICE_EXPIRATION) {
     const key = this.generateDeviceKey(deviceInfo.id);
     await this.redisSession.set(key, JSON.stringify(deviceInfo), { EX: ttl });
   }

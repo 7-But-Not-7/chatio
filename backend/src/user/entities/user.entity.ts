@@ -1,27 +1,26 @@
-import { Message } from "src/chat/entities/chat.entity";
-import { Column, CreateDateColumn, Entity, Index, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Message } from "src/chat/entities/message.entity";
+import { Column, Entity, Index, OneToMany, OneToOne } from "typeorm";
 import { Settings } from "./setting.entity";
+import { BaseEntity } from "src/common/entities/base.entity";
+import { ChatRoom } from "src/chat/entities/chat-room.entity";
 
 @Entity()
-export class User {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
-
-    @Column({nullable: true})
+export class User extends BaseEntity {
+    @Column({ nullable: true })
     fullName?: string;
 
-    @Column({unique: true})
+    @Column({ unique: true })
     username: string;
 
     @Index()
-    @Column({unique: true, nullable: true})
+    @Column({ unique: true, nullable: true })
     phoneNumber: string;
 
     @Index()
-    @Column({unique: true})
+    @Column({ unique: true })
     email: string;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     password: string;
 
     @Column({ nullable: true })
@@ -30,27 +29,24 @@ export class User {
     @Column({ nullable: true })
     profilePicture?: string;
 
-    @Column({default: null})
+    @Column({ default: null })
     emailVerifiedDate?: Date;
 
-    @Column({default: null})
+    @Column({ default: null })
     phoneNumberVerifiedDate?: Date;
 
-    @Column({default: null})
+    @Column({ default: null })
     googleId?: string;
 
-    @Column({default: null})
+    @Column({ default: null })
     appleId?: string;
 
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;   
-
-    @OneToOne(()=> Settings, (settings) => settings.user)
+    @OneToOne(() => Settings, (settings) => settings.user)
     settings: Settings;
 
-    @OneToMany(()=> Message, (message) => message.user)
+    @OneToMany(() => Message, (message) => message.user)
     messages: Message[];
+
+    @OneToMany(() => ChatRoom, (chatRoom) => chatRoom.createdBy)
+    createdChatRooms: ChatRoom[];
 }
