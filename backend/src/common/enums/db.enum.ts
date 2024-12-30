@@ -20,3 +20,8 @@ export enum FileType {
     AUDIO = "audio",
     DOCUMENT = "document",
 }
+
+export enum CallType {
+    VIDEO = "video",
+    AUDIO = "audio",
+}

@@ -43,6 +43,9 @@ export class User extends BaseEntity {
     @Column({ default: null })
     appleId?: string;
 
+    @Column({ default: null })
+    lastSeen?: Date;
+
     @OneToOne(() => Settings, (settings) => settings.user)
     settings: Settings;
 
