@@ -15,6 +15,9 @@ import { RandomHelper } from 'src/common/utils/random.helper';
 import { ServiceHelper } from 'src/common/utils/service.helper';
 import { UserProvider } from 'src/user/providers/user.provider';
 import { SessionService } from 'src/session/session.service';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+import { EmailJob, SmsJob } from 'src/common/types/notification';
 
 @Injectable()
 export class AuthService {
@@ -24,8 +27,8 @@ export class AuthService {
         private readonly sessionService: SessionService,
         private readonly bcryptService: BcryptService,
         private readonly cryptoService: CryptoService,
-        private readonly emailService: EmailService,
-        private readonly smsService: SmsService
+        @InjectQueue('email') private readonly emailQueue: Queue<EmailJob>,
+        @InjectQueue('sms') private readonly smsQueue: Queue<SmsJob>,
     ) { }
 
     async login(loginData: LoginBodyDto, deviceId: string) {
@@ -148,7 +151,7 @@ export class AuthService {
             await this.sessionService.setVerificationCode(`email-verification:${email}`, code);
 
             // Send email verification code
-            this.emailService.sendEmail({
+            this.emailQueue.add({
                 to: email,
                 subject: 'Email Verification Code',
                 template: EmailName.VERIFY_EMAIL,
@@ -189,7 +192,7 @@ export class AuthService {
             await this.sessionService.setVerificationCode(`phone-verification:${phoneNumber}`, code);
 
             // Send phone verification code
-            this.smsService.sendSms(phoneNumber, `Your phone verification code is ${code}`);
+            this.smsQueue.add({ to: phoneNumber, message: `Your phone verification code is ${code}` });
             return true;
         } catch (error) {
             ServiceHelper.handleServiceError(error, ErrorMessages.SEND_PHONE_VERIFICATION_CODE_FAILED);
@@ -231,14 +234,14 @@ export class AuthService {
 
             // Send password reset code
             if (email) {
-                this.emailService.sendEmail({
+                this.emailQueue.add({
                     to: email,
                     subject: 'Password Reset Code',
                     template: EmailName.PASSWORD_RESET,
                     data: { code }
                 });
             } else {
-                this.smsService.sendSms(phoneNumber, `Your password reset code is ${code}`);
+                this.smsQueue.add({ to: phoneNumber, message: `Your password reset code is ${code}` });
             }
             return true;
         } catch (error) {

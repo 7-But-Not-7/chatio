@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { QueueModule } from 'src/queue/queue.module';
 import { NotificationsGateway } from './notifications.gateway';
@@ -16,7 +16,7 @@ import { FcmToken } from './entities/fcm-tokens.entity';
 import { Notification } from './entities/notification.entity';
 
 @Module({
-  imports: [AuthModule, CacheModule,
+  imports: [forwardRef(()=>AuthModule), CacheModule,
     TypeOrmModule.forFeature([FcmToken, Notification]),
   ],
   providers: [NotificationsService, NotificationsGateway, NotificationsProvider, FcmTokensProvider,

@@ -18,9 +18,9 @@ export class NotificationsService {
     async sendNotification(notificationJob: NotificationJob) {
         try {
             await this.notificationProvider.createNotification(notificationJob.data);
-            // const fcmTokens = await this.fcmTokensProvider.getUserTokens(notificationJob.to);
-            // const tokens = fcmTokens.map(token => token.token);
-            const tokens = [];
+            const fcmTokens = await this.fcmTokensProvider.getUserTokens(notificationJob.to);
+            const tokens = fcmTokens.map(token => token.token);
+            // const tokens = [];
             const payload: Omit<TokenMessage, "token"> = {
                 notification: {
                     title: notificationJob.data.title,

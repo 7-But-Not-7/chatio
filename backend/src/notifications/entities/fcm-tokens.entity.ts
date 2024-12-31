@@ -4,7 +4,7 @@ import { Column, Entity, ManyToOne, Unique } from "typeorm";
 
 
 @Entity()
-@Unique(["userId", "deviceId"])
+@Unique(["user", "deviceId"])
 export class FcmToken extends BaseEntity {
     @Column()
     token: string;
