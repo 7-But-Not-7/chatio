@@ -14,6 +14,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FcmToken } from './entities/fcm-tokens.entity';
 import { Notification } from './entities/notification.entity';
 import { NotificationOwnerGaurd } from './guards/notification-owner.guard';
+import Redis from 'ioredis';
 
 @Module({
   imports: [forwardRef(() => AuthModule), CacheModule,
@@ -31,6 +32,17 @@ import { NotificationOwnerGaurd } from './guards/notification-owner.guard';
         return admin.initializeApp({
           credential: admin.credential.cert(serviceAccountorPath),
         });
+      }
+    },
+    {
+      inject: [ConfigService],
+      provide: 'WS_REDIS_CLIENT',
+      useFactory: (configService: ConfigService) => {
+        const redisUrl = configService.get('redis.socketUrl');
+        if (!redisUrl) {
+          throw new Error('Redis URL is not configured');
+        }
+        return new Redis(redisUrl);
       }
     }
   ],
