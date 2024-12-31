@@ -16,7 +16,7 @@ import { FcmToken } from './entities/fcm-tokens.entity';
 import { Notification } from './entities/notification.entity';
 
 @Module({
-  imports: [QueueModule, AuthModule, CacheModule,
+  imports: [AuthModule, CacheModule,
     TypeOrmModule.forFeature([FcmToken, Notification]),
   ],
   providers: [NotificationsService, NotificationsGateway, NotificationsProvider, FcmTokensProvider,
