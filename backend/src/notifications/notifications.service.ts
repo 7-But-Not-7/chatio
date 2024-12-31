@@ -42,4 +42,34 @@ export class NotificationsService {
             console.error("Error sending notification", error)
         }
     }
+
+    async markNotificationAsRead(notificationId: string) {
+        await this.notificationProvider.markNotificationAsRead(notificationId);
+        return true;
+    }
+
+    async markAllNotificationsAsRead(userId: string) {
+        await this.notificationProvider.markAllNotificationsAsRead(userId);
+        return true;
+    }
+
+    async deleteNotification(notificationId: string) {
+        await this.notificationProvider.deleteNotification(notificationId);
+        return true;
+    }
+
+    async deleteAllUserNotifications(userId: string) {
+        await this.notificationProvider.deleteAllUserNotifications(userId);
+        return true;
+    }
+
+    async getNotifications(userId: string) {
+        const notifications = await this.notificationProvider.getUserNotifications(userId);
+        return notifications;
+    }
+
+    async getNotification(notificationId: string) {
+        const notification = await this.notificationProvider.getNotification(notificationId);
+        return notification;
+    }
 }

@@ -11,4 +11,10 @@ export enum SuccessMessages{
     SINGLE_LOGOUT_SUCCESSFUL = "Single logout successful",
     LOGOUT_ALL_SUCCESSFUL = "Logout all successful",
     SESSION_VALID = "Session is valid",
+    NOTIFICATIONS_FETCHED = "Notifications fetched",
+    NOTIFICATION_FETCHED = "Notification fetched",
+    NOTIFICATION_MARKED_AS_READ = "Notification marked as read",
+    ALL_NOTIFICATIONS_MARKED_AS_READ = "All notifications marked as read",
+    NOTIFICATION_DELETED = "Notification deleted",
+    ALL_NOTIFICATIONS_DELETED = "All notifications deleted",
 }
