@@ -5,6 +5,7 @@ import { NotificationsProvider } from './providers/notifications.provider';
 import { NotificationJob } from 'src/common/types/notification';
 import * as admin from 'firebase-admin';
 import { TokenMessage } from 'firebase-admin/lib/messaging/messaging-api';
+import { NotificationHelper } from 'src/common/utils/notification.helper';
 
 @Injectable()
 export class NotificationsService {
@@ -18,23 +19,14 @@ export class NotificationsService {
     async sendNotification(notificationJob: NotificationJob) {
         try {
             await this.notificationProvider.createNotification({ ...(notificationJob.data), userId: notificationJob.to });
+            
+            // Send notification to websockets
+            this.notificationGateway.sendNotification(notificationJob);
+
+            // Send notification to FCM
             const fcmTokens = await this.fcmTokensProvider.getUserTokens(notificationJob.to);
             const tokens = fcmTokens.map(token => token.token);
-            // const tokens = [];
-            const payload: Omit<TokenMessage, "token"> = {
-                notification: {
-                    title: notificationJob.data.title,
-                    body: notificationJob.data.content,
-                    imageUrl: notificationJob.data.image,
-                },
-                webpush: {
-                    notification: {
-                        icon: notificationJob.data.image,
-                        click_action: notificationJob.data.actionURL,
-                        vibrate: [200, 100, 200],
-                    }
-                },
-            };
+            const payload = NotificationHelper.getNotificationPayload(notificationJob.data);
             for (const token of tokens) {
                 await this.firebaseAdmin.messaging().send({ ...payload, token });
             }

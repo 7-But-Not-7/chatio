@@ -4,8 +4,8 @@ import Redis from 'ioredis';
 import { Socket, Server } from 'socket.io';
 import { WsAuthGuard } from 'src/auth/guards/ws.auth.guard';
 import { WsAuthMiddleware } from 'src/auth/guards/ws.middleware';
-import { WsAuthInfo } from 'src/common/decorators/auth-info.ws.decorator';
-import { AccessTokenPayload } from 'src/common/types/auth';
+import { AuthenticatedWsClient } from 'src/common/types/auth';
+import { NotificationJob } from 'src/common/types/notification';
 
 @UseGuards(WsAuthGuard)
 @WebSocketGateway({ namespace: 'notifications' })
@@ -17,20 +17,36 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
 
   @WebSocketServer() server: Server
 
+  private getRedisKey(userId: string, deviceId: string) {
+    return `notifications:${userId}:${deviceId}`;
+  }
+
   afterInit(server: Socket) {
     server.use(this.wsAuthMiddleware.authorize() as any);
   }
 
-  handleConnection(client: Socket, @WsAuthInfo() authInfo: AccessTokenPayload, ...args: any[]) {
-    console.log('Client connected to Notifications', client.id);
+  handleConnection(client: AuthenticatedWsClient, ...args: any[]) {
+    const {userId, deviceId} = client.authInfo;
+    const redisKey = this.getRedisKey(userId, deviceId);
+    this.wsRedisClient.set(redisKey, client.id);
   }
 
-  handleDisconnect(@WsAuthInfo() authInfo: AccessTokenPayload) {
-    console.log('Client disconnected from Notifications', authInfo.userId);
+  handleDisconnect(client: AuthenticatedWsClient) {
+    const {userId, deviceId} = client.authInfo;
+    const redisKey = this.getRedisKey(userId, deviceId);
+    this.wsRedisClient.del(redisKey);
   }
 
   @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
-    return 'Hello world! from Notifications';
+  handleMessage(client: AuthenticatedWsClient, payload: any): void {
+    this.server.emit('message', `${client.authInfo.userId} says ${payload}`);   
+  }
+
+  async sendNotification({to, data}: NotificationJob) {
+    const keys = await this.wsRedisClient.keys(`notifications:${to}:*`);
+    keys.forEach(async (key) => {
+      const socketId = await this.wsRedisClient.get(key);
+      this.server.to(socketId).emit('notification', data);
+    });
   }
 }

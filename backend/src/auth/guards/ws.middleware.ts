@@ -10,10 +10,8 @@ export class WsAuthMiddleware implements WsAuthMiddlewareType{
 
     authorize = () => async (client: Socket, next: (err?: Error) => void) => {
         const token = client.handshake.auth.token || client.handshake.headers.authorization;
-        console.log('Token:', token);
         try {
             const authInfo = await this.authGaurdBase.validateToken(token);
-            console.log('AuthInfo:', authInfo);
             (client as any).authInfo = authInfo;
             next();
         } catch (e) {

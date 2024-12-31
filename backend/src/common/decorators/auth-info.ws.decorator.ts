@@ -6,6 +6,7 @@ import { AuthenticatedWsClient } from '../types/auth';
 export const WsAuthInfo = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const client: AuthenticatedWsClient = ctx.switchToWs().getClient(); 
+    console.log({client})
     return client.authInfo;
   },
 );
