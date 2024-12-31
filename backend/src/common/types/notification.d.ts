@@ -1,20 +1,20 @@
 import { CreateNotificationDto } from "src/notifications/dto/create-notification.dto";
-import { OmitType } from '@nestjs/mapped-types';
-
+import { PickType } from '@nestjs/mapped-types';
+import { Notification } from "src/notifications/entities/notification.entity";
 export interface NotificationJob {
     to: string;
-    data: OmitType<CreateNotificationDto, ['userId']>;
+    data: PickType<Notification, [ "title", "content", "type", "actionURL", "image", ]>;
 }
 
 export interface EmailJob {
     to: string;
     subject: string;
     template: EmailName;
-    data: {[key: string]: any};
+    data: { [key: string]: any };
 }
 
 export interface SmsJob {
     to: string;
     message: string;
-    data?: {[key: string]: any};
+    data?: { [key: string]: any };
 }
