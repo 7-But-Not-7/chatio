@@ -14,7 +14,8 @@ import { EmailorPhoneDto } from '../dtos/email-phone.opt.dto';
 import { ResetPasswordDto } from '../dtos/reset-password.body.dto';
 import { AuthEndpoints } from 'src/common/enums/endpoints.enum';
 import { JwtAuthGuard } from '../guards/jwt.auth.guard';
-import { AuthenticatedRequest } from '../../common/types/auth';
+import { AccessTokenPayload } from '../../common/types/auth';
+import { AuthInfo } from 'src/common/decorators/auth-info.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -107,7 +108,7 @@ export class AuthController {
   // Logout route
   @Post(AuthEndpoints.LOGOUT)
   @HttpCode(HttpStatus.NO_CONTENT)
-  async logout(@Headers('x-device-id') deviceId: string, @Req() req: Request) {
+  async logout(@Headers('x-device-id') deviceId: string) {
     await this.authService.logout(deviceId);
     return new ResponseDto(SuccessMessages.SINGLE_LOGOUT_SUCCESSFUL);
   }
@@ -116,8 +117,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Post(AuthEndpoints.LOGOUT_ALL)
   @HttpCode(HttpStatus.NO_CONTENT)
-  async logoutAll(@Req() req: AuthenticatedRequest) {
-    await this.authService.logoutAll(req.authInfo.userId);
+  async logoutAll(@AuthInfo() {userId}: AccessTokenPayload) {
+    await this.authService.logoutAll(userId);
     return new ResponseDto(SuccessMessages.LOGOUT_ALL_SUCCESSFUL);
   }
 
@@ -125,8 +126,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get(AuthEndpoints.VERIFY_SESSION)
   @HttpCode(HttpStatus.OK)
-  async verifySession(@Req() req: AuthenticatedRequest) {
-    const result = this.authService.verifySession(req.authInfo.userId, req.authInfo.deviceId);
+  async verifySession(@AuthInfo() {userId, deviceId}: AccessTokenPayload) {
+    const result = this.authService.verifySession(userId, deviceId);
     return new ResponseDto(SuccessMessages.SESSION_VALID, result);
   }
 }

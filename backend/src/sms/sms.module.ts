@@ -3,7 +3,7 @@ import { SmsService } from './sms.service';
 import { QueueModule } from 'src/queue/queue.module';
 
 @Module({
-  imports: [QueueModule],
+  imports: [],
   providers: [SmsService],
   exports: [SmsService],
 })

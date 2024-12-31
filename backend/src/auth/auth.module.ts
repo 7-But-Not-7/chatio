@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthService } from './services/auth.service';
 import { AuthController } from './controllers/auth.controller';
 import { UserModule } from 'src/user/user.module';
@@ -16,6 +16,7 @@ import { SocialAuthService } from './services/social.auth.service';
 import { AuthGaurdBase } from './guards';
 import { WsAuthGuard } from './guards/ws.auth.guard';
 import { WsAuthMiddleware } from './guards/ws.middleware';
+import { QueueModule } from 'src/queue/queue.module';
 
 @Module({
   controllers: [AuthController, SocialAuthController],
@@ -23,8 +24,7 @@ import { WsAuthMiddleware } from './guards/ws.middleware';
   imports: [
     UserModule,
     SessionModule,
-    SmsModule,
-    EmailModule,
+    forwardRef(()=> QueueModule),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
