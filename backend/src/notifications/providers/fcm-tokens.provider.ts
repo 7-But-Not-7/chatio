@@ -15,7 +15,7 @@ export class FcmTokensProvider {
     ) { }
 
     getToken(token: string) {
-        return this.fcmTokenRepository.findOne({ where: { token } })
+        return this.fcmTokenRepository.findOneBy({ token })
     }
 
     createToken(createFcmTokenDto: CreateFcmTokenDto) {
