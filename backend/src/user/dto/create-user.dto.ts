@@ -14,4 +14,5 @@ export class CreateUserDto extends OmitType(User, [
     'invitationsSent',
     'blockedBy',
     'blocked',
+    'fcmTokens',
 ]) { }

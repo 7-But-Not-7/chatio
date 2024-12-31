@@ -6,6 +6,7 @@ import { ChatRoom } from "src/chat/entities/chat-room.entity";
 import { ChatMember } from "src/chat/entities/chat-member.entity";
 import { Notification } from "src/notifications/entities/notification.entity";
 import { ChatInvitation } from "src/chat/entities/chat-invitation.entity";
+import { FcmToken } from "src/notifications/entities/fcm-tokens.entity";
 
 @Entity()
 export class User extends BaseEntity {
@@ -64,6 +65,9 @@ export class User extends BaseEntity {
 
     @OneToMany(() => ChatInvitation, (chatInvitation) => chatInvitation.sender)
     invitationsSent: ChatInvitation[];
+
+    @OneToMany(() => FcmToken, (fcmToken) => fcmToken.user)
+    fcmTokens: FcmToken[];
 
     @ManyToMany(() => User, user => user.blocked)
     blockedBy: User[];

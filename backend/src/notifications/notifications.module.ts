@@ -7,10 +7,19 @@ import * as admin from 'firebase-admin';
 import { ConfigService } from '@nestjs/config';
 import { FirebaseHelper } from 'src/common/utils/firebase.helper';
 import { ErrorMessages } from 'src/common/enums/error-messages.enum';
+import { NotificationsController } from './notifications.controller';
+import { NotificationsProvider } from './providers/notifications.provider';
+import { FcmTokensProvider } from './providers/fcm-tokens.provider';
+import { CacheModule } from 'src/cache/cache.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { FcmToken } from './entities/fcm-tokens.entity';
+import { Notification } from './entities/notification.entity';
 
 @Module({
-  imports: [QueueModule, AuthModule],
-  providers: [NotificationsService, NotificationsGateway,
+  imports: [QueueModule, AuthModule, CacheModule,
+    TypeOrmModule.forFeature([FcmToken, Notification]),
+  ],
+  providers: [NotificationsService, NotificationsGateway, NotificationsProvider, FcmTokensProvider,
     {
       inject: [ConfigService],
       provide: 'FIREBASE_ADMIN',
@@ -26,5 +35,6 @@ import { ErrorMessages } from 'src/common/enums/error-messages.enum';
     }
   ],
   exports: [NotificationsService],
+  controllers: [NotificationsController],
 })
 export class NotificationsModule { }
