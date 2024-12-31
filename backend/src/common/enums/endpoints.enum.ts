@@ -19,3 +19,12 @@ export enum AuthEndpoints{
 export enum UserEndpoints{
     CHECK_USERNAME = 'check-username'
 }
+
+export enum NotificationEndpoints{
+    GET_NOTIFICATIONS = '',
+    GET_NOTIFICATION = ':notificationId',
+    MARK_AS_READ = 'read/:notificationId',
+    MARK_ALL_AS_READ = 'read',
+    DELETE_NOTIFICATION = ':notificationId',
+    DELETE_ALL_NOTIFICATIONS = '',
+}

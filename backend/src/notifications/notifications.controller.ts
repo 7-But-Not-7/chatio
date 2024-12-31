@@ -1,25 +1,19 @@
-import { Controller, Get } from '@nestjs/common';
-import { NotificationJob } from 'src/common/types/notification';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.auth.guard';
+import { NotificationEndpoints } from 'src/common/enums/endpoints.enum';
+import { AuthInfo } from 'src/common/decorators/auth-info.decorator';
+import { AccessTokenPayload } from 'src/common/types/auth';
 
 @Controller('notifications')
+@UseGuards(JwtAuthGuard)
 export class NotificationsController {
     constructor(
         private readonly notificationService: NotificationsService,
     ) { }
 
-    @Get()
-    async getNotifications() {
-        const notification: NotificationJob = {
-            to: "user-id",
-            data: {
-                title: "Hello",
-                content: "World",
-                image: "https://example.com/image.png",
-                actionURL: "https://example.com",
-            }
-        }
-        await this.notificationService.sendNotification(notification);
-        return "Notification sent";
+    @Get(NotificationEndpoints.GET_NOTIFICATIONS)
+    async getNotifications(@AuthInfo() authInfo: AccessTokenPayload) {
+        return "Hello";
     }
 }
