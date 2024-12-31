@@ -17,7 +17,7 @@ export class NotificationsService {
 
     async sendNotification(notificationJob: NotificationJob) {
         try {
-            await this.notificationProvider.createNotification(notificationJob.data);
+            await this.notificationProvider.createNotification({ ...(notificationJob.data), userId: notificationJob.to });
             const fcmTokens = await this.fcmTokensProvider.getUserTokens(notificationJob.to);
             const tokens = fcmTokens.map(token => token.token);
             // const tokens = [];
@@ -36,7 +36,7 @@ export class NotificationsService {
                 },
             };
             for (const token of tokens) {
-                await this.firebaseAdmin.messaging().send({...payload, token});
+                await this.firebaseAdmin.messaging().send({ ...payload, token });
             }
         } catch (error) {
             console.error("Error sending notification", error)
