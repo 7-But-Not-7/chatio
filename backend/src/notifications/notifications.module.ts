@@ -13,18 +13,19 @@ import { CacheModule } from 'src/cache/cache.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FcmToken } from './entities/fcm-tokens.entity';
 import { Notification } from './entities/notification.entity';
+import { NotificationOwnerGaurd } from './guards/notification-owner.guard';
 
 @Module({
-  imports: [forwardRef(()=>AuthModule), CacheModule,
-    TypeOrmModule.forFeature([FcmToken, Notification]),
+  imports: [forwardRef(() => AuthModule), CacheModule,
+  TypeOrmModule.forFeature([FcmToken, Notification]),
   ],
-  providers: [NotificationsService, NotificationsGateway, NotificationsProvider, FcmTokensProvider,
+  providers: [NotificationsService, NotificationsGateway, NotificationsProvider, FcmTokensProvider, NotificationOwnerGaurd,
     {
       inject: [ConfigService],
       provide: 'FIREBASE_ADMIN',
       useFactory: (configService: ConfigService) => {
         const serviceAccountorPath = FirebaseHelper.getServiceAccountKey(configService);
-        if(!serviceAccountorPath) {
+        if (!serviceAccountorPath) {
           throw new Error(ErrorMessages.FIREBASE_SERVICE_KEY_NOT_FOUND);
         }
         return admin.initializeApp({

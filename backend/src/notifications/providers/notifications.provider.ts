@@ -19,6 +19,10 @@ export class NotificationsProvider {
         return this.notificationRepository.findOneBy({ id })
     }
 
+    getNotificationOwner(id: string) {
+        return this.notificationRepository.findOne({ where: { id }, relations: ['user'], select: { user: { id: true } } })
+    }
+
     getUserNotifications(userId: string) {
         return this.notificationRepository.find({ where: { user: { id: userId } } })
     }

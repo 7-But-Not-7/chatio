@@ -33,4 +33,5 @@ export enum ErrorMessages{
     LOGOUT_ALL_FAILED="Error logging out all devices",
     VERIFY_SESSION_FAILED="Error verifying session",
     FIREBASE_SERVICE_KEY_NOT_FOUND="Firebase service key not found",
+    NOT_NOTIFICATION_OWNER="You are not the owner of this notification",
 }
