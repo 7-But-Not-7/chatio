@@ -5,14 +5,14 @@ export class NotificationHelper {
     static getNotificationPayload(notification: Notification["data"]): Omit<TokenMessage, "token"> {
         return {
             notification: {
-                title: notification.data.title,
-                body: notification.data.content,
-                imageUrl: notification.data.image,
+                title: notification.title,
+                body: notification.content,
+                imageUrl: notification.image,
             },
             webpush: {
                 notification: {
-                    icon: notification.data.image,
-                    click_action: notification.data.actionURL,
+                    icon: notification.image,
+                    click_action: notification.actionURL,
                     vibrate: [200, 100, 200],
                 }
             },
