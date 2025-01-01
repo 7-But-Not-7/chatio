@@ -1,4 +1,3 @@
-import { Message } from "src/chat/entities/message.entity";
 import { Column, Entity, Index, ManyToMany, OneToMany, OneToOne } from "typeorm";
 import { Settings } from "./setting.entity";
 import { BaseEntity } from "src/common/entities/base";

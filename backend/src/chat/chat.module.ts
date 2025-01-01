@@ -9,6 +9,7 @@ import { File } from './entities/file.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
+import { ChatInvitation } from './entities/chat-invitation.entity';
 
 @Module({
   controllers: [],
@@ -26,7 +27,7 @@ import Redis from 'ioredis';
     }
   ],
   imports: [
-    TypeOrmModule.forFeature([Message, ChatMember, ChatRoom, File]),
+    TypeOrmModule.forFeature([Message, ChatMember, ChatRoom, File, ChatInvitation]),
     AuthModule,
   ],
 })

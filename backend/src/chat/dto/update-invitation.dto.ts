@@ -1,5 +1,5 @@
 import { ChatInvitationStatus } from "src/common/enums/db.enum";
 
-export class UpdateInvitationDto {
+export class UpdateChatInvitationDto {
     status: ChatInvitationStatus;
 }
