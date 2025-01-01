@@ -4,7 +4,6 @@ import { FcmTokensProvider } from './providers/fcm-tokens.provider';
 import { NotificationsProvider } from './providers/notifications.provider';
 import { NotificationJob } from 'src/common/types/notification';
 import * as admin from 'firebase-admin';
-import { TokenMessage } from 'firebase-admin/lib/messaging/messaging-api';
 import { NotificationHelper } from 'src/common/utils/notification.helper';
 
 @Injectable()
