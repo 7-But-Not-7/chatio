@@ -4,8 +4,10 @@ import Redis from 'ioredis';
 import { Socket, Server } from 'socket.io';
 import { WsAuthGuard } from 'src/auth/guards/ws.auth.guard';
 import { WsAuthMiddleware } from 'src/auth/guards/ws.middleware';
+import { NotificationEmitEvents, NotificationListenEvents } from 'src/common/enums/ws-events.enum';
 import { AuthenticatedWsClient } from 'src/common/types/auth';
 import { NotificationJob } from 'src/common/types/notification';
+import { ServerNotificationEvents } from 'src/common/types/ws-events';
 
 @UseGuards(WsAuthGuard)
 @WebSocketGateway({ namespace: 'notifications' })
@@ -15,7 +17,7 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
     @Inject("WS_REDIS_CLIENT") private readonly wsRedisClient: Redis,
   ) { }
 
-  @WebSocketServer() server: Server
+  @WebSocketServer() server: Server<any, ServerNotificationEvents>;
 
   private getRedisKey(userId: string, deviceId: string) {
     return `notifications:${userId}:${deviceId}`;
@@ -37,16 +39,16 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
     this.wsRedisClient.del(redisKey);
   }
 
-  @SubscribeMessage('message')
+  @SubscribeMessage(NotificationListenEvents.NOTIFICATION)
   handleMessage(client: AuthenticatedWsClient, payload: any): void {
-    this.server.emit('message', `${client.authInfo.userId} says ${payload}`);   
+    this.server.emit(NotificationEmitEvents.NOTIFICATION, `${client.authInfo.userId} says ${payload}`);   
   }
 
   async sendNotification({to, data}: NotificationJob) {
     const keys = await this.wsRedisClient.keys(`notifications:${to}:*`);
     keys.forEach(async (key) => {
       const socketId = await this.wsRedisClient.get(key);
-      this.server.to(socketId).emit('notification', data);
+      this.server.to(socketId).emit(NotificationEmitEvents.NOTIFICATION, data);
     });
   }
 }

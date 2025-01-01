@@ -4,7 +4,9 @@ import Redis from 'ioredis';
 import {Socket, Server} from 'socket.io';
 import { WsAuthGuard } from 'src/auth/guards/ws.auth.guard';
 import { WsAuthMiddleware } from 'src/auth/guards/ws.middleware';
+import { ChatListenEvents } from 'src/common/enums/ws-events.enum';
 import { AuthenticatedWsClient } from 'src/common/types/auth';
+import { ClientChatEvents, ServerChatEvents } from 'src/common/types/ws-events';
 
 @UseGuards(WsAuthGuard)
 @WebSocketGateway({namespace: 'chat'})
@@ -14,7 +16,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     @Inject("WS_REDIS_CLIENT") private readonly wsRedisClient: Redis,
   ) {}
 
-  @WebSocketServer() server: Server  
+  @WebSocketServer() private readonly server: Server <ClientChatEvents, ServerChatEvents> 
 
   private getRedisKey(userId: string, deviceId: string) {
     return `chat:${userId}:${deviceId}`;
@@ -37,9 +39,10 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     this.wsRedisClient.del(redisKey);
   }
 
-  @SubscribeMessage('message')
+  @SubscribeMessage(ChatListenEvents.MESSAGE)
   handleMessage(client: AuthenticatedWsClient, payload: any) {
-    console.log('Message received', payload, client.authInfo);
-    client.broadcast.emit('message', payload);
+    client.broadcast.emit('', payload);
   }
+
+
 }

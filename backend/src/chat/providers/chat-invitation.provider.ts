@@ -5,7 +5,7 @@ import { CreateChatInvitationDto } from "../dto/create-inivitation.dto";
 import { UpdateChatInvitationDto } from "../dto/update-invitation.dto";
 
 
-export class MessageProvider {
+export class ChatInvitationProvider {
     constructor(@InjectRepository(ChatInvitation) private readonly chatInvitationRepository: Repository<ChatInvitation>) { }
 
     getReceivedChatInvitationsByUserId(userId: string): Promise<ChatInvitation[]> {
