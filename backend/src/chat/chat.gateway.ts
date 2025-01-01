@@ -30,6 +30,7 @@ export class ChatGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
   handleConnection(client: AuthenticatedWsClient, ...args: any[]) {
+    // Save the socket id to redis
     const { userId, deviceId } = client.authInfo;
     const redisKey = this.getRedisKey(userId, deviceId);
     this.wsRedisClient.set(redisKey, client.id);
