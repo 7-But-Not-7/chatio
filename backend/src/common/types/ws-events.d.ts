@@ -1,6 +1,8 @@
 
 export interface ServerChatEvents{
     message: (payload: any) => void;
+    update_message: (payload: any) => void;
+    delete_message: (payload: any) => void;
 }
 
 export interface ClientChatEvents{

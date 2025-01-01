@@ -1,5 +1,4 @@
-import { User } from 'src/user/entities/user.entity';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 import { ChatRoom } from './chat-room.entity';
 import { BaseEntity } from 'src/common/entities/base';
 import { ChatMember } from './chat-member.entity';
@@ -11,7 +10,7 @@ export class Message extends BaseEntity {
   content: string;
 
   @ManyToOne(() => ChatMember, (chatMember) => chatMember.messages)
-  author: User;
+  author: ChatMember;
 
   @ManyToOne(() => ChatRoom, (chatRoom) => chatRoom.messages)
   chatRoom: ChatRoom;

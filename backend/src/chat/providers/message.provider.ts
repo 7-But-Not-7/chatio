@@ -25,12 +25,15 @@ export class MessageProvider {
         return this.messageRepository.findOneBy({ id });
     }
 
-    updateMessage(message: UpdateMessageDto): Promise<Message> {
-        return this.messageRepository.save(message);
+    async updateMessage(id: string, message: UpdateMessageDto): Promise<Message> {
+        await this.messageRepository.update({ id }, message);
+        return this.getMessageById(id);
     }
 
-    deleteMessageById(id: string) {
-        return this.messageRepository.delete({ id });
+    async deleteMessageById(id: string): Promise<Message> {
+        const deletedMessage = await this.getMessageById(id);
+        await this.messageRepository.delete({ id });
+        return deletedMessage;
     }
 
     createFile(file: CreateFileDto): Promise<File> {
