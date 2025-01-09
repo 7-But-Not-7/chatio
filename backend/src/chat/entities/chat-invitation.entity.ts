@@ -8,7 +8,7 @@ import { User } from "src/user/entities/user.entity";
 @Entity()
 export class ChatInvitation extends BaseEntity {
 
-    @Column()
+    @Column({default: ChatInvitationStatus.PENDING})
     status: ChatInvitationStatus;
 
     @Column({default: false})

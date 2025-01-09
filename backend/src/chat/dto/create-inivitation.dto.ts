@@ -5,5 +5,5 @@ export class CreateChatInvitationDto {
     receiverId: string;
     isGroup?: boolean;
     senderId: string;
-    status: ChatInvitationStatus;
+    status?: ChatInvitationStatus;
 }

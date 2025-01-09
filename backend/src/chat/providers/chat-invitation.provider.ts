@@ -9,7 +9,7 @@ export class ChatInvitationProvider {
     constructor(@InjectRepository(ChatInvitation) private readonly chatInvitationRepository: Repository<ChatInvitation>) { }
 
     getReceivedChatInvitationsByUserId(userId: string): Promise<ChatInvitation[]> {
-        return this.chatInvitationRepository.find({ where: { receiver: { id: userId } } });
+        return this.chatInvitationRepository.find({ where: { receiver: { id: userId } }, relations: ['sender', 'chatRoom'] });
     }
 
     getSentChatInvitationsByUserId(userId: string): Promise<ChatInvitation[]> {
