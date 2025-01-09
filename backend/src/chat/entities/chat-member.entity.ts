@@ -25,6 +25,12 @@ export class ChatMember extends BaseEntity {
     @ManyToOne(() => User, (user) => user.chatMembers)
     user: User;
 
+    @ManyToOne(() => ChatMember, (chatMember) => chatMember.addedMembers)
+    addedBy: ChatMember;
+
+    @OneToMany(() => ChatMember, (chatMember) => chatMember.addedBy)
+    addedMembers: ChatMember[];
+
     @OneToMany(() => Message, (message) => message.author)
     messages: Message[];
 
