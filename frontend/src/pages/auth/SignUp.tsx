@@ -4,7 +4,7 @@ import { Success } from "./Success";
 import { Verify } from "./Verify";
 
 export const SignUp: React.FC = () => {
-  const {currentStep, next, prev, reset} = useSignUpStep();
+  const {currentStep} = useSignUpStep();
   return (
   <div className="flex items-center h-screen w-full justify-center  ">
     {currentStep === "register" && <Register />}

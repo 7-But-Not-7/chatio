@@ -6,7 +6,7 @@ export const Verify: React.FC = () => {
   const [mode, setMode] = useState(true);
   const { prev } = useSignUpStep();
   return (
-    <div className='flex flex-col items-center justify-center shadow-lg rounded-[38px] border border-solid w-[599px] h-[600px] backdrop-blur-lg '> 
+    <div className='flex flex-col items-center justify-center shadow-lg rounded-[38px] border border-solid w-[599px] h-[600px] bg-[#ffffff4d] '> 
       <h1 className="text-white text-4xl text-center font-semibold mb-8">Check your {mode ? "e-mail" : "messages"}</h1>
       {/* info text */}
       <h3 className="text-black font-semibold text-[15px] mb-4">

@@ -110,7 +110,7 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center shadow-lg rounded-[38px] border border-solid w-[599px] h-fit backdrop-blur-lg ">
+    <div className="flex flex-col items-center justify-center shadow-lg rounded-[38px] border border-solid w-[599px] h-fit  bg-[#ffffff4d]">
       
 
       <h1 className="text-2xl font-bold text-[43px] my-6 text-white ">
