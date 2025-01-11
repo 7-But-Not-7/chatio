@@ -6,7 +6,7 @@ import { UpdateChatMemberDto } from "../dto/update-chat-member.dto";
 import { ChatRoom } from "../entities/chat-room.entity";
 
 
-export class ChatRoomProvider {
+export class ChatMemeberProvider {
     constructor(
         @InjectRepository(ChatMember) private readonly chatMemberRepository: Repository<ChatMember>,
     ) { }

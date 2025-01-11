@@ -9,10 +9,15 @@ import { AuthModule } from 'src/auth/auth.module';
 import { ConfigService } from '@nestjs/config';
 import Redis from 'ioredis';
 import { ChatInvitation } from './entities/chat-invitation.entity';
+import { ChatMemeberProvider } from './providers/chat-member.provider';
+import { ChatInvitationProvider } from './providers/chat-invitation.provider';
+import { MessageProvider } from './providers/message.provider';
+import { ChatRoomProvider } from './providers/chat-room.provider';
+import { QueueModule } from 'src/queue/queue.module';
 
 @Module({
   controllers: [],
-  providers: [ChatGateway,
+  providers: [ChatGateway, ChatRoomProvider, ChatInvitationProvider, MessageProvider, ChatMemeberProvider,
     {
       inject: [ConfigService],
       provide: 'WS_REDIS_CLIENT',
@@ -28,6 +33,7 @@ import { ChatInvitation } from './entities/chat-invitation.entity';
   imports: [
     TypeOrmModule.forFeature([Message, ChatMember, ChatRoom, File, ChatInvitation]),
     AuthModule,
+    QueueModule,
   ],
 })
 export class ChatModule { }

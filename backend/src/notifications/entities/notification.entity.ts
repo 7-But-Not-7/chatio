@@ -1,5 +1,5 @@
 import { BaseEntity } from "src/common/entities/base";
-import { NotificationType } from "src/common/enums/notification.enum";
+import { NotificationTitle, NotificationType } from "src/common/enums/notification.enum";
 import { User } from "src/user/entities/user.entity";
 import { Column, Entity, ManyToOne } from "typeorm";
 
@@ -8,7 +8,7 @@ import { Column, Entity, ManyToOne } from "typeorm";
 export class Notification extends BaseEntity {
 
     @Column()
-    title: string;
+    title: NotificationTitle;
 
     @Column()
     content: string;

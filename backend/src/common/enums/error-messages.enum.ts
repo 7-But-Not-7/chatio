@@ -35,4 +35,5 @@ export enum ErrorMessages{
     FIREBASE_SERVICE_KEY_NOT_FOUND="Firebase service key not found",
     NOT_NOTIFICATION_OWNER="You are not the owner of this notification",
     INVITATION_NOT_FOUND="Invitation not found",
+    CHAT_ROOM_NOT_FOUND="Chat room not found",
 }
