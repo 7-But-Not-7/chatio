@@ -13,4 +13,7 @@ module.exports = new DataSource({
   synchronize: false,
   logging: process.env.IS_PRODUCTION === "true" ? false : ["error", "info", "log", "warn"],
   ssl: process.env.IS_PRODUCTION === "true" ? { rejectUnauthorized: false } : false,
+  extra: {
+    trustSeverCertificate: true,
+  }
 });
