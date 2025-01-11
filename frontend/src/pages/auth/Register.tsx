@@ -1,6 +1,7 @@
 import React from "react";
 import * as yup from "yup";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Input } from "./components/Input";
 
 export const Register: React.FC = () => {
   type FormValues = {
@@ -58,7 +59,11 @@ export const Register: React.FC = () => {
       .boolean()
       .oneOf([true], "You must agree to the terms and conditions"),
   });
-
+  // on change function
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues({ ...formValues, [name]: value });
+  };
   // Handle submit function
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -84,9 +89,11 @@ export const Register: React.FC = () => {
             (newErrors as Record<string, string>)[error.path] = error.message;
           }
         });
-        setErrors(newErrors);
         // Extract the first error message
-        const firstError = Object.values(errors).find((error) => typeof error === 'string') as string | undefined;
+        const firstError = Object.values(errors).find(
+          (error) => typeof error === "string"
+        ) as string | undefined;
+        setErrors(firstError ? { [err.path as string]: firstError } : newErrors);
         setToastMessage(firstError || "An error occurred");
         setIsToastOpen(true);
 
@@ -99,104 +106,80 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center shadow-lg rounded-[38px] border border-solid w-[599px] h-[600px] backdrop-blur-lg ">
-      {/* Notification Toast */}
-      <Alert
-        variant="default"
-        className={`absolute top-4 left-4 transition-opacity duration-300 ${
-          isToastOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-      >
-        <AlertTitle>Notification</AlertTitle>
-        <AlertDescription>{toastMessage}</AlertDescription>
-      </Alert>
+    <div className="flex flex-col items-center justify-center shadow-lg rounded-[38px] border border-solid w-[599px] h-fit backdrop-blur-lg ">
+      
 
       <h1 className="text-2xl font-bold text-[43px] my-6 text-white ">
         Sign Up
       </h1>
 
       <form className="flex flex-col items-center py-4 px-4">
-        <input
+        <Input
           type="text"
           placeholder="Full Name"
-          className={`p-2 border ${
-            errors.fullName ? "border-red-500" : "border-gray-300"
-          } rounded w-[433px] h-[41px] my-4 placeholder-grey-600 font-bold`}
-          value={formValues.fullName}
-          onChange={(e) =>
-            setFormValues({ ...formValues, fullName: e.target.value })
-          }
+          formValue={formValues.fullName}
+          handleChange={handleChange}
+          name="fullName"
+          errors={errors.fullName}
         />
-        {errors.fullName && (
-          <div className="text-red-500 text-sm">{errors.fullName}</div>
-        )}
 
-        <input
+        <Input
           type="email"
           placeholder="Email"
-          className={`p-2 border ${
-            errors.email ? "border-red-500" : "border-gray-300"
-          } rounded w-[433px] h-[41px] my-2 placeholder-grey-600 font-bold`}
-          value={formValues.email}
-          onChange={(e) =>
-            setFormValues({ ...formValues, email: e.target.value })
-          }
+          formValue={formValues.email}
+          handleChange={handleChange}
+          name="email"
+          errors={errors.email}
         />
-        {/* {errors.email && (
-          <div className="text-red-500 text-sm">{errors.email}</div>
-        )} */}
 
-        <input
+        <Input
           type="tel"
           placeholder="Phone Number"
-          className="p-2 border border-gray-300 rounded w-[433px] h-[41px] my-2 placeholder-grey-600  font-bold"
-          value={formValues.phoneNumber}
-          onChange={(e) =>
-            setFormValues({ ...formValues, phoneNumber: e.target.value })
-          }
+          formValue={formValues.phoneNumber}
+          handleChange={handleChange}
+          name="phoneNumber"
+          errors={errors.phoneNumber}
         />
-        <input
-          type="text"
-          placeholder="Username"
-          className="p-2 border border-gray-300 rounded w-[433px] h-[41px] my-2 placeholder-grey-600  font-bold"
-          value={formValues.username}
-          onChange={(e) =>
-            setFormValues({ ...formValues, username: e.target.value })
-          }
+        <Input 
+        type = "text"
+        placeholder="Username"
+        formValue={formValues.username}
+        handleChange={handleChange}
+        name="username"
+        errors={errors.username}
         />
-        <input
-          type="password"
-          placeholder="Password"
-          className="p-2 border border-gray-300 rounded w-[433px] h-[41px] my-2 placeholder-grey-600  font-bold"
-          value={formValues.password}
-          onChange={(e) =>
-            setFormValues({ ...formValues, password: e.target.value })
-          }
+        <Input
+        type = "password"
+        placeholder="Password"
+        formValue={formValues.password}
+        handleChange={handleChange}
+        name="password"
+        errors={errors.password}
         />
-        <input
-          type="password"
-          placeholder="Confirm Password"
-          className="p-2 border border-gray-300 rounded w-[433px] h-[41px] my-2 placeholder-grey-600  font-bold"
-          value={formValues.confirmPassword}
-          onChange={(e) =>
-            setFormValues({ ...formValues, confirmPassword: e.target.value })
-          }
+        <Input
+        type = "password"
+        placeholder="Confirm Password"
+        formValue={formValues.confirmPassword}
+        handleChange={handleChange}
+        name="confirmPassword"
+        errors={errors.confirmPassword}
         />
+
         <span className="flex items-center gap-2">
           <input
-            type="checkbox"
-            name="terms_and_condition"
-            className="bg-transparent border-2 border-solid border-black focus:ring-0 text-black"
-            checked={formValues.checked}
-            onChange={(e) =>
-              setFormValues({ ...formValues, checked: e.target.checked })
-            }
+        type="checkbox"
+        name="checked"
+        className="bg-transparent border-2 border-solid border-black focus:ring-0 text-black"
+        checked={formValues.checked}
+        onChange={(e) =>
+          setFormValues({ ...formValues, checked: e.target.checked })
+        }
           />{" "}
           <p className="text-[16px]">
-            I agree to the{" "}
-            <a href="#" className="text-white font-bold">
-              terms and conditions
-            </a>
+        I agree to the{" "}
+        <a href="#" className="text-white font-bold">
+          terms and conditions
+        </a>
           </p>
         </span>
 
