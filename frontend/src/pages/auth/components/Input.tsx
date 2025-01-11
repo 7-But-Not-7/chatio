@@ -6,10 +6,11 @@ interface InputProps {
     errors : string | undefined;
     name: string;
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    handleBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
     formValue: string;
 }
 
-export const Input: React.FC<InputProps> = ({ type, placeholder,name,  errors,  formValue, handleChange }) => {
+export const Input: React.FC<InputProps> = ({ type, placeholder,name,  errors,  formValue, handleChange , handleBlur}) => {
     return ( 
         <>
             <input
@@ -21,6 +22,7 @@ export const Input: React.FC<InputProps> = ({ type, placeholder,name,  errors,  
               } rounded w-[433px] h-[41px] mt-4 placeholder-grey-600 font-bold`}
               value={formValue}
               onChange={handleChange}
+              onBlur={handleBlur}
             />
             {errors && (
               <div className="text-red-500 text-sm">{errors}</div>

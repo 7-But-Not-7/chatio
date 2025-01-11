@@ -1,7 +1,7 @@
 import React from "react";
 import * as yup from "yup";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "./components/Input";
+import { useSignUpStep } from "./hooks/useSignUpStep";
 
 export const Register: React.FC = () => {
   type FormValues = {
@@ -13,7 +13,8 @@ export const Register: React.FC = () => {
     confirmPassword: string;
     checked: boolean;
   };
-
+  // move to the next step
+  const { next } = useSignUpStep();
   // Set states to store user input
   const [formValues, setFormValues] = React.useState<FormValues>({
     fullName: "",
@@ -26,8 +27,6 @@ export const Register: React.FC = () => {
   });
 
   const [errors, setErrors] = React.useState<Partial<FormValues>>({});
-  const [toastMessage, setToastMessage] = React.useState<string | null>(null);
-  const [isToastOpen, setIsToastOpen] = React.useState(false);
 
   // Validation schema
   const validationSchema = yup.object().shape({
@@ -59,6 +58,23 @@ export const Register: React.FC = () => {
       .boolean()
       .oneOf([true], "You must agree to the terms and conditions"),
   });
+  // on blur function to validate the input in focus
+  const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+  
+    try {
+      // Validate only the field being blurred
+      await validationSchema.validateAt(name, { ...formValues, [name]: value });
+      // Clear the error if validation passes
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }));
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        // Update error state with the validation error for the current field
+        setErrors((prevErrors) => ({ ...prevErrors, [name]: error.message }));
+      }
+    }
+  };
+  
   // on change function
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -74,13 +90,7 @@ export const Register: React.FC = () => {
     try {
       await validationSchema.validate(formValues, { abortEarly: false });
       console.log("Form submitted successfully:", formValues);
-      setToastMessage("Registration successful!");
-      setIsToastOpen(true);
-
-      // Close the toast after 2 seconds
-      setTimeout(() => {
-        setIsToastOpen(false);
-      }, 2000);
+      next();
     } catch (err) {
       const newErrors: Partial<FormValues> = {};
       if (err instanceof yup.ValidationError) {
@@ -94,13 +104,7 @@ export const Register: React.FC = () => {
           (error) => typeof error === "string"
         ) as string | undefined;
         setErrors(firstError ? { [err.path as string]: firstError } : newErrors);
-        setToastMessage(firstError || "An error occurred");
-        setIsToastOpen(true);
-
-        // Close the toast after 2 seconds
-        setTimeout(() => {
-          setIsToastOpen(false);
-        }, 2000);
+        
       }
     }
   };
@@ -121,6 +125,7 @@ export const Register: React.FC = () => {
           handleChange={handleChange}
           name="fullName"
           errors={errors.fullName}
+          handleBlur={handleBlur}
         />
 
         <Input
@@ -130,7 +135,8 @@ export const Register: React.FC = () => {
           handleChange={handleChange}
           name="email"
           errors={errors.email}
-        />
+          handleBlur={handleBlur}
+          />
 
         <Input
           type="tel"
@@ -139,6 +145,7 @@ export const Register: React.FC = () => {
           handleChange={handleChange}
           name="phoneNumber"
           errors={errors.phoneNumber}
+          handleBlur={handleBlur}
         />
         <Input 
         type = "text"
@@ -147,6 +154,7 @@ export const Register: React.FC = () => {
         handleChange={handleChange}
         name="username"
         errors={errors.username}
+        handleBlur={handleBlur}
         />
         <Input
         type = "password"
@@ -155,6 +163,7 @@ export const Register: React.FC = () => {
         handleChange={handleChange}
         name="password"
         errors={errors.password}
+        handleBlur={handleBlur}
         />
         <Input
         type = "password"
@@ -163,6 +172,7 @@ export const Register: React.FC = () => {
         handleChange={handleChange}
         name="confirmPassword"
         errors={errors.confirmPassword}
+        handleBlur={handleBlur}
         />
 
         <span className="flex items-center gap-2">
@@ -191,7 +201,7 @@ export const Register: React.FC = () => {
         </button>
       </form>
 
-      <p className="text-white text-[15px]">
+      <p className="text-black mb-6 font-semibold text-[15px]">
         Already have an account?{" "}
         <a href="#" className="text-white font-bold">
           Sign In

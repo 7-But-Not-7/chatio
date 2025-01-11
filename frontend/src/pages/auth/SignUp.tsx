@@ -10,15 +10,7 @@ export const SignUp: React.FC = () => {
     {currentStep === "register" && <Register />}
     {currentStep === "email-phone" && <Verify />}
     {currentStep === "success" && <Success />}
-    <div className="flex flex-row gap-4 items-center justify-center p-5">
-      <button onClick={next}>Next</button>
-    </div>
-    <div>
-      <button onClick={prev}>Prev</button>
-    </div>
-    <div>
-      <button onClick={reset}>Reset</button>
-    </div>
-  </div>
+    
+  </div> 
 );
 };
