@@ -19,6 +19,12 @@ import { DatabaseProvider } from './database.provider';
         autoLoadEntities: true,
         logging: configService.get<boolean>('isProduction') ? false : ["error", "info", "log", "warn"],
         synchronize: !configService.get<boolean>('isProduction') || true,
+        ssl: true,
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
       }),
     }),
   ],
