@@ -18,6 +18,9 @@ export class Settings extends BaseEntity {
     @Column({ default: VideoType.CASUAL })
     videoType: VideoType;
 
+    @Column({default: true})
+    readReceipts: boolean;
+
     @OneToOne(() => User, (user) => user.settings)
     user: User;
 }
