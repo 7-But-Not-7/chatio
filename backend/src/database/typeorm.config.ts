@@ -12,4 +12,5 @@ module.exports = new DataSource({
   migrations: ["src/database/migrations/*.ts"],
   synchronize: false,
   logging: process.env.IS_PRODUCTION === "true" ? false : ["error", "info", "log", "warn"],
+  ssl: process.env.IS_PRODUCTION === "true" ? { rejectUnauthorized: false } : false,
 });
