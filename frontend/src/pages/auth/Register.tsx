@@ -2,6 +2,8 @@ import React from "react";
 import * as yup from "yup";
 import { Input } from "./components/Input";
 import { useSignUpStep } from "./hooks/useSignUpStep";
+import { FcGoogle } from "react-icons/fc";
+import { PiAppleLogoDuotone } from "react-icons/pi";
 
 export const Register: React.FC = () => {
   type FormValues = {
@@ -110,10 +112,10 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center shadow-lg rounded-[38px] border border-solid w-[599px] h-fit  bg-[#ffffff4d]">
+    <div className="flex flex-col items-center justify-center shadow-lg rounded-[38px] border border-solid w-[599px] my-2 h-fit  bg-[#ffffff4d]">
       
 
-      <h1 className="text-2xl font-bold text-[43px] my-6 text-white ">
+      <h1 className=" font-bold text-[43px] mt-3 mb-1 text-white ">
         Sign Up
       </h1>
 
@@ -195,14 +197,18 @@ export const Register: React.FC = () => {
 
         <button
           onClick={handleSubmit}
-          className="bg-gradient-to-l from-[#2F6EB5] to-[#531FBB] text-white p-2 w-[177.5px] h-[47px] my-2 rounded-[20px]"
+          className="font-semibold bg-gradient-to-l from-[#2F6EB5] to-[#531FBB] text-white p-2 w-[177.5px] h-[47px] my-2 rounded-[20px]"
         >
-          Register
+          Sign Up
         </button>
       </form>
-
+        <p className="font-bold">Sign Up with</p>
+        <span className="grid md:grid-cols-2 gap-2">
+                  <button className="bg-black text-white p-2 w-fit flex items-center h-[47px] my-2 rounded-[20px]"><FcGoogle /><p className="ml-2">Sign up with Google </p></button>
+                  <button className="bg-black text-white p-2 w-[177.5px] flex items-center h-[47px] my-2 rounded-[20px]"><PiAppleLogoDuotone /> <p className="ml-2">Sign up with Apple</p> </button>
+                </span>
       <p className="text-black mb-6 font-semibold text-[15px]">
-        Already have an account?{" "}
+        Have an account?{" "}
         <a href="/auth/login" className="text-white font-bold">
           Sign In
         </a>
