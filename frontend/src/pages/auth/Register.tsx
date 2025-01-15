@@ -203,7 +203,7 @@ export const Register: React.FC = () => {
 
       <p className="text-black mb-6 font-semibold text-[15px]">
         Already have an account?{" "}
-        <a href="#" className="text-white font-bold">
+        <a href="/auth/login" className="text-white font-bold">
           Sign In
         </a>
       </p>
