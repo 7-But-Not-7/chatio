@@ -16,7 +16,7 @@ const Base: React.FC = () => {
   return (
     <div className="h-screen w-full flex items-center justify-center bg-gradient-to-br from-gray-800/50 to-gray-600/50 backdrop-blur-lg">
       <div className=" p-6 rounded-lg shadow-md backdrop-blur-lg">
-        <h1 className="text-2xl font-bold text-white mb-4">Welcome to ChatApp!</h1>
+        <h1 className="text-2xl font-bold text-white mb-4">Welcome to Chat.io!</h1>
         <button
           id="install-button"
           onClick={handleInstallClick}
